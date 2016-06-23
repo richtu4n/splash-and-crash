@@ -1,0 +1,21 @@
+{
+  "name": "splash-and-crash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon --watch . --watch views -e js,hbs,css --harmony src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "koa": "^1.2.0",
+    "koa-body": "^1.4.0",
+    "koa-hbs": "^0.8.1",
+    "koa-router": "^5.4.0",
+    "koa-static-server": "^0.1.8",
+    "stripe": "^4.7.0"
+  }
+}
