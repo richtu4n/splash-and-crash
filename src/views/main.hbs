@@ -54,12 +54,18 @@
 				font-weight: 200;
 				font-size: 18px;
 			}
+
+			.payment-header{
+				height: 50px;
+				background-color: #333;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="background-img"></div>
 		<div class="layout-wrapper">
 			<div class="payment-wrapper">
+				<div class="payment-header">STRIPE</div>
 				<form action="/pay" method="POST" id="payment-form">
 				  <span class="payment-errors"></span>
 
