@@ -1,0 +1,136 @@
+/* ---------- reset form styles --------- */
+
+.payment-form{
+	color: #555;
+}
+
+.payment-form input {
+	padding: 0;
+	margin: 0;
+	border: none;
+	box-sizing: border-box;
+	color: #555;
+}
+
+.payment-form input:focus {
+	padding: 0;
+	margin: 0;
+	border: none;
+	box-sizing: border-box;
+	color: #555;
+}
+
+.payment-form input[type="submit"]{
+	background-color: white;
+}
+
+
+
+/* ------------ layout styles ------------- */
+
+.background-img{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.layout-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: 100vw;	
+}
+
+.payment-wrapper {
+	width: 440px;
+	margin: 0 10%;
+}
+
+
+/* ---------- background styles ----------- */
+
+.background-img{
+	background-image: url('../img/background.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+}
+
+.payment-wrapper {
+	background-color: rgba(255, 255, 255,1);
+	border-radius: 8px;
+	-webkit-filter: blur(0px);
+	-moz-filter: blur(0px);
+	-o-filter: blur(0px);
+	-ms-filter: blur(0px);
+	filter: blur(0px);
+}
+
+/* ---------- form styles ------------- */
+
+.payment-form {
+	font-weight: 400;
+	font-size: 14px;
+}
+
+
+/*form header*/
+
+.form-header {
+	position: relative;
+	border-bottom: 1px solid #ccc;
+}
+.stripe-logo {
+	width: 80px;
+	margin: 15px;
+}
+.fa-lock,
+.fa-times{
+	font-size: 20px!important;
+	position: absolute;
+	color: #999;
+}
+.fa-lock{
+	right: 45px;
+	top: 23px;
+}
+.fa-times {
+	right: 20px;
+	top: 21px;
+}
+.fa-times:hover{
+	color: #555;
+	cursor: pointer;
+}
+
+/*form body*/
+
+.form-body{
+	padding: 15px;
+}
+
+
+/*form footer*/
+
+.form-footer{
+	padding: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+

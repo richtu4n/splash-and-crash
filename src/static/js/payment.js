@@ -2,7 +2,7 @@
 Stripe.setPublishableKey('pk_test_VUq5GazNdBC0SNWYzaIRz9ta');
 
 $(document).ready(function() {
-  var $form = $('#payment-form');
+  var $form = $('.payment-form');
   $form.submit(function(event) {
     console.log('submit');
     // Disable the submit button to prevent repeated clicks:
@@ -20,7 +20,7 @@ $(document).ready(function() {
 function stripeResponseHandler(status, response) {
   // Grab the form:
   console.log('stripe response handler');
-  var $form = $('#payment-form');
+  var $form = $('.payment-form');
 
   if (response.error) { // Problem!
     console.log('error');
@@ -44,6 +44,3 @@ function stripeResponseHandler(status, response) {
 };
 
 
-function callPost(){
-  $('#payment-form').get(0).submit();
-}
