@@ -107,6 +107,7 @@ button.submit {
 .payment-form {
 	font-weight: 400;
 	font-size: 14px;
+	margin-bottom: -100%;
 }
 
 
