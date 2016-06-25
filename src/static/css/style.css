@@ -28,6 +28,13 @@ button.submit {
 
 /* ------------ layout styles ------------- */
 
+.site-title {
+	position: fixed;
+	top: 10vh;
+	width: 100%;
+	text-align: center;
+}
+
 .background-img{
 	position: absolute;
 	top: 0;
@@ -36,24 +43,40 @@ button.submit {
 	right: 0;
 }
 
+.loader {
+
+}
+
+.light-box {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+}
+
 .layout-wrapper {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	width: 100vw;	
+	width: 100vw;
+	position: relative;
+	z-index: 2;
 }
 
 .payment-wrapper {
 	width: 440px;
 	margin: 0 10%;
 }
+.payment-form{
 
+}
 .stripe-logo {
 	top: 20px;
 	left: 16px;
 }
-
 .fa-lock{
 	right: 41px;
 	top: 26px;
@@ -62,13 +85,19 @@ button.submit {
 	right: 16px;
 	top: 25px;
 }
-
 .form-body,
 .form-footer {
 	padding: 16px;
 }
 
-/* ---------- background styles ----------- */
+/* ---------- design styles ----------- */
+
+.site-title {
+	font-family: 'Lobster', cursive;
+	font-size: 45px;
+	color: #fff;
+	text-shadow: 0px 0px 5px #000;
+}
 
 .background-img{
 	background-image: url('../img/background.jpg');
@@ -79,6 +108,14 @@ button.submit {
 	-o-filter: blur(5px);
 	-ms-filter: blur(5px);
 	filter: blur(5px);
+}
+
+.loader {
+
+}
+
+.light-box {
+	background-color: rgba(0,0,0,0.6);
 }
 
 .payment-wrapper {
@@ -107,7 +144,6 @@ button.submit {
 .payment-form {
 	font-weight: 400;
 	font-size: 14px;
-	margin-bottom: -100%;
 }
 
 
@@ -196,6 +232,22 @@ button.submit:hover{
 	margin-left: -24px;
 	padding-right:10px;
 	display: inline!important;
+}
+
+.payment-errors {
+}
+
+
+/* ----------------- media queries ------------ */
+
+
+@media (min-width: 550px) {
+
+	.site-title {
+		top: 5vh;
+		font-size: 70px;
+	}
+
 }
 
 
