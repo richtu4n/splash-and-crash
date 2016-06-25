@@ -1,38 +1,35 @@
-var koa     = require('koa');
-var router  = require('koa-router')();
-var hbs     = require('koa-hbs');
-var Promise = require('bluebird');
-var serve   = require('koa-static-server');
-var koaBody = require('koa-body');
-var pay     = require("./utilities/payments.js");
-var app     = koa();
+var koa        = require('koa');
+var log        = require('./utilities/logger');
+var koaLogger  = require('./utilities/koa-logger');
+var koaBody    = require('koa-body');
+var router     = require('koa-router')();
+var routes     = require('./utilities/routes');
+var hbs        = require('koa-hbs');
+var Promise    = require('bluebird');
+var serve      = require('koa-static-server');
+var pay        = require('./utilities/payments');
+var config     = require('./config/config');
 
-app.use(koaBody({
-	formidable:{uploadDir: __dirname}
-}));
+//exports
+var app = module.exports = koa();
 
-app.use(hbs.middleware({
-  viewPath: __dirname + '/views'
-}));
+//routes
+router.get('/', routes.home);
+router.post('/pay', routes.pay);
 
-app.use(serve({
-	rootDir: __dirname + "/static", rootPath: "/static"
-}));
-
-router.get('/', function *(){
-	yield this.render('main');
-});
-
-router.post('/pay', function *(){
-	try {
-		var response = yield pay.send(this.request.body.stripeToken);
-		this.body = { response: response, success: true };
-	} catch (err) {
-		this.body = { response: err, success: false };
-	}	
-});
-
+//middleware
+app.use(koaLogger());
+app.use(koaBody({formidable:{uploadDir: __dirname}}));
+app.use(hbs.middleware({viewPath: __dirname + '/views'}));
+app.use(serve({rootDir: __dirname + "/static", rootPath: "/static"}));
 app.use(router.routes());
 
-app.listen(3000);
-console.log('server running on http://localhost:3000');
+
+//------------------------------------------------------------------------------
+
+if (!module.parent) {
+    app.listen(config.port);
+    console.log('server running on http://localhost:' + config.port);
+}
+
+//-------------------------------------------------------------------------------

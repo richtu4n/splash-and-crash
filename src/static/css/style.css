@@ -2,6 +2,7 @@
 
 .payment-form{
 	color: #555;
+	font-family: 'Lato', sans-serif;
 }
 
 .payment-form input {
@@ -20,11 +21,10 @@
 	color: #555;
 }
 
-.payment-form input[type="submit"]{
+button.submit {
 	background-color: white;
+	border: none;
 }
-
-
 
 /* ------------ layout styles ------------- */
 
@@ -49,6 +49,24 @@
 	margin: 0 10%;
 }
 
+.stripe-logo {
+	top: 20px;
+	left: 16px;
+}
+
+.fa-lock{
+	right: 41px;
+	top: 26px;
+}
+.fa-times {
+	right: 16px;
+	top: 25px;
+}
+
+.form-body,
+.form-footer {
+	padding: 16px;
+}
 
 /* ---------- background styles ----------- */
 
@@ -71,6 +89,17 @@
 	-o-filter: blur(0px);
 	-ms-filter: blur(0px);
 	filter: blur(0px);
+	overflow: hidden;
+}
+
+.form-body,
+.form-footer {
+	background-color: #eff2f5;
+}
+
+.form-footer {
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 
 /* ---------- form styles ------------- */
@@ -86,24 +115,17 @@
 .form-header {
 	position: relative;
 	border-bottom: 1px solid #ccc;
+	height: 70px;
 }
 .stripe-logo {
 	width: 80px;
-	margin: 15px;
+	position: absolute;
 }
 .fa-lock,
 .fa-times{
 	font-size: 20px!important;
 	position: absolute;
 	color: #999;
-}
-.fa-lock{
-	right: 45px;
-	top: 23px;
-}
-.fa-times {
-	right: 20px;
-	top: 21px;
 }
 .fa-times:hover{
 	color: #555;
@@ -113,16 +135,67 @@
 /*form body*/
 
 .form-body{
-	padding: 15px;
+	font-weight: 100;
 }
-
+.form-body label{
+	margin-right: 10px;
+	display: block;
+	font-size: 18px;
+	margin-top: 5px;
+	margin-bottom: 2px;
+}
+.form-body input,
+.form-body input:focus {
+	width: 100%;
+	padding: 5px;
+	font-size: 18px;
+}
+.flex-container{
+	display: flex;
+}
+.flex-item {
+	flex: 1;
+}
+.flex-item:first-child{
+	margin-right: 8px;
+}
+.flex-item:last-child{
+	margin-left: 8px;
+}
+.exp-month {
+	margin-right: 4px!important;
+}
+.exp-year {
+	margin-left: 4px!important;
+}
 
 /*form footer*/
 
 .form-footer{
-	padding: 15px;
+	position: relative;
 }
-
+button.submit {
+	width: 100%;
+	padding: 10px 0;
+	background-color: rgb(53,154,213);
+	color: rgb(255,255,255);
+	font-weight: 400;
+}
+button.submit:hover{
+	cursor: pointer;
+	background-color: rgba(53,154,213,0.8);
+}
+.form-footer .spacer {
+	height: 16px;
+	margin-top: -16px;
+	border-top: 2px solid rgba(204, 204, 204, 0.2);
+}
+.fa-check{
+	color: rgb(255,255,255);
+	margin-left: -24px;
+	padding-right:10px;
+	display: inline!important;
+}
 
 
 

@@ -4,6 +4,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="static/css/normalise.min.css" />
 		<link rel="stylesheet" type="text/css" href="static/css/style.css" />
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,300,100' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
 
@@ -12,16 +13,35 @@
 		<div class="layout-wrapper">
 			<div class="payment-wrapper">
 				<form action="/pay" method="POST" class="payment-form">
+					
+					<!-- form header -->
 					<div class="form-header">
 						<img class="stripe-logo" src="static/img/stripe.svg" />
 						<i class="fa fa-lock" aria-hidden="true"></i>
 						<i class="fa fa-times" aria-hidden="true"></i>
+					</div>
+
+					<!-- form body -->
+					<div class="form-body">
+						<div><label>Card number</label><input type="text" data-stripe="number"></div>
+						<div class="flex-container">
+							<div class="flex-item"><label>Expiry</label><div class="flex-container">
+								<input class="exp-month" type="text" data-stripe="exp_month" placeholder="MM">
+								<input class="exp-year" type="text" data-stripe="exp_year" placeholder="YY">
+							</div></div>
+							<div class="flex-item"><label>Security code</label><input type="text" data-stripe="cvc" placeholder="CVC"></div>
 						</div>
-					<div class="form-body">Form body</div>
+					</div>
+
+					<!-- form footer -->
 					<div class="form-footer">
-						<input type="submit" class="submit" value="Pay £10">
+						<div class="spacer"></div>
+						<button class="submit" type="submit" value="Pay £10.00">
+							<i class="fa fa-check" aria-hidden="true"></i>Pay  £10.00
+						</button>
 						<span class="payment-errors"></span>
 					</div>
+
 				</form>
 			</div>
 		</div>
