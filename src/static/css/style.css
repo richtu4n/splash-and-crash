@@ -1,7 +1,8 @@
 /* ---------- reset form styles --------- */
 
 .payment-form,
-.welcome-form {
+.welcome-form,
+.disclaimer-form {
 	color: #555;
 	font-family: 'Lato', sans-serif;
 }
@@ -87,7 +88,8 @@ button {
 }
 
 .payment-wrapper,
-.welcome-wrapper {
+.welcome-wrapper,
+.disclaimer-wrapper {
 	width: 440px;
 	margin: 0 10%;
 }
@@ -163,14 +165,21 @@ button {
 /* ---------- form styles ------------- */
 
 .payment-form,
-.welcome-form {
+.welcome-form,
+.disclaimer-form {
 	font-weight: 400;
 	font-size: 14px;
 }
 
+.disclaimer-form {
+	color: #fff;
+	text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+}
+
 .welcome-form input,
 .welcome-form input:focus,
-.welcome-form button {
+.welcome-form button,
+.disclaimer-form button {
 	width: 100%;
 	padding: 10px;
 	font-size: 18px;
@@ -180,7 +189,27 @@ button {
 	border-radius: 4px;
 }
 
-.welcome-form button {
+.disclaimer-form ul {
+	font-weight: 100;
+}
+
+.disclaimer-form h1 {
+	/*text-align: center;*/
+}
+
+.disclaimer-form i.fa-gavel {
+	font-size: 15px;
+	margin-right: 10px;
+}
+
+.disclaimer-form ul {
+	list-style: none;
+	padding-left: 20px;
+	font-size: 20px;
+}
+
+.welcome-form button,
+.disclaimer-form button {
 	border-radius: 0;
 	/*background-color: rgb(53,154,213);*/
 	background-color: rgb(229, 151, 0);
@@ -188,7 +217,8 @@ button {
 	text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
 	font-weight: 300;
 }
-.welcome-form button:hover{
+.welcome-form button:hover,
+.disclaimer-form button:hover {
 	cursor: pointer;
 	box-shadow: 0px 0px 1px #fff;
 }
