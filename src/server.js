@@ -1,17 +1,21 @@
+var async      = require('asyncawait/async');
+var await      = require('asyncawait/await');
 var koa        = require('koa');
-var log        = require('./utilities/logger');
-var koaLogger  = require('./utilities/koa-logger');
 var koaBody    = require('koa-body');
 var router     = require('koa-router')();
-var routes     = require('./utilities/routes');
 var hbs        = require('koa-hbs');
-var Promise    = require('bluebird');
 var serve      = require('koa-static-server');
+var Promise    = require('bluebird');
+var co         = require('co');
+var log        = require('./utilities/logger');
+var koaLogger  = require('./utilities/koa-logger');
+var routes     = require('./routes');
 var pay        = require('./utilities/payments');
 var config     = require('./config/config');
+var mongo      = require('./mongo/connection');
 
 //exports
-var app = module.exports = koa();
+var app = koa();
 
 //routes
 router.get('/', routes.home);
@@ -19,7 +23,7 @@ router.post('/pay', routes.pay);
 
 //middleware
 app.use(koaLogger());
-app.use(koaBody({formidable:{uploadDir: __dirname}}));
+app.use(koaBody({ formidable: { uploadDir: __dirname } }));
 app.use(hbs.middleware({viewPath: __dirname + '/views'}));
 app.use(serve({rootDir: __dirname + "/static", rootPath: "/static"}));
 app.use(router.routes());
@@ -27,9 +31,13 @@ app.use(router.routes());
 
 //------------------------------------------------------------------------------
 
-if (!module.parent) {
-    app.listen(config.port);
-    console.log('server running on http://localhost:' + config.port);
-}
+async (function () {
+	await (mongo.init());
+
+	app.listen(config.port, function () {
+		log.info('Server running on port: ' + config.port + '.');
+	});
+})();
+
 
 //-------------------------------------------------------------------------------

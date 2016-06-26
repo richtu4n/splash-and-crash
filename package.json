@@ -4,20 +4,25 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --watch . --watch views -e js,hbs,css --harmony src/server.js"
+    "start": "node --harmony src/server.js",
+    "dev": "nodemon --watch . --watch views -e js,hbs,css --harmony src/server.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {},
   "dependencies": {
+    "asyncawait": "^1.0.3",
     "bluebird": "^3.4.1",
+    "co": "^4.6.0",
     "debug": "^2.2.0",
     "koa": "^1.2.0",
     "koa-body": "^1.4.0",
     "koa-hbs": "^0.8.1",
     "koa-router": "^5.4.0",
     "koa-static-server": "^0.1.8",
+    "mongodb": "^2.1.18",
     "ms": "^0.7.1",
+    "promise-mongo": "^3.0.3",
     "stripe": "^4.7.0"
   }
 }
