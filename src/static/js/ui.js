@@ -164,7 +164,11 @@ var welcomeForm = {
 		//request user id
 		this._requestUserIdAsync()
 			.then(function(response){
-				userContext.id = response.userId
+				if(response.success){
+					userContext.id = response.result.userId
+				} else {
+					console.log('error. ' + response.result);
+				}
 			})
 			.error(function(error){
 				//log
