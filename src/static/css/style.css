@@ -26,9 +26,18 @@ button.submit {
 	border: none;
 }
 
+
+
 /* ------------ layout styles ------------- */
 
-.background-img{
+.site-title {
+	position: fixed;
+	top: 10vh;
+	width: 100%;
+	text-align: center;
+}
+
+.background{
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -36,24 +45,47 @@ button.submit {
 	right: 0;
 }
 
+.loader {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	align-items: center;
+	justify-content: center;
+}
+
+.light-box {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+}
+
 .layout-wrapper {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	width: 100vw;	
+	width: 100vw;
+	position: relative;
+	z-index: 2;
 }
 
 .payment-wrapper {
 	width: 440px;
 	margin: 0 10%;
 }
-
+.payment-form{
+	display: none;
+}
 .stripe-logo {
 	top: 20px;
 	left: 16px;
 }
-
 .fa-lock{
 	right: 41px;
 	top: 26px;
@@ -62,15 +94,21 @@ button.submit {
 	right: 16px;
 	top: 25px;
 }
-
 .form-body,
 .form-footer {
 	padding: 16px;
 }
 
-/* ---------- background styles ----------- */
+/* ---------- design styles ----------- */
 
-.background-img{
+.site-title {
+	font-family: 'Lobster', cursive;
+	font-size: 45px;
+	color: #fff;
+	text-shadow: 0px 0px 10px #000;
+}
+
+.background{
 	background-image: url('../img/background.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -79,6 +117,14 @@ button.submit {
 	-o-filter: blur(5px);
 	-ms-filter: blur(5px);
 	filter: blur(5px);
+}
+
+.loader {
+
+}
+
+.light-box {
+	background-color: rgba(0,0,0,0.6);
 }
 
 .payment-wrapper {
@@ -197,8 +243,74 @@ button.submit:hover{
 	display: inline!important;
 }
 
+.payment-errors {
+}
 
 
+/* ----------------- media queries ------------ */
+
+
+@media (min-width: 550px) {
+
+	.site-title {
+		top: 5vh;
+		font-size: 70px;
+	}
+
+	/*.background{
+		-webkit-filter: blur(10px);
+		-moz-filter: blur(10px);
+		-o-filter: blur(10px);
+		-ms-filter: blur(10px);
+		filter: blur(10px);
+	}*/
+
+}
+
+
+
+/* ------------------------------------------------------------------------------------------------------------------ 
+
+    Animation Styles 
+
+/------------------------------------------------------------------------------------------------------------------- */
+
+
+.spinner > div {
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
 
 
 
