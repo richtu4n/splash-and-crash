@@ -8,56 +8,16 @@ $(document).ready(function(){
 	welcomeForm.init();
 	setTimeout(function(){
 		scroll.top();
-	},500);
+	},700);
 });
 
 var userContext = {
-	name: null,
-	email: null,
-	id: null
+	userName: null,
+	userEmail: null,
+	userId: null,
+	agree: null,
+	stripeToken: null
 }
-
-var stripeForm = {
-
-	state: {
-		ready: false,
-		open: false
-	},
-	element: null,
-	init: function(){
-		this.element = $('.payment-form');
-		this._bindEventHandlers();
-		this.state.ready = true;
-	},
-	close: function(){
-		this.element.find('.exit').click();
-	},
-	toggle: function(){
-		if(this.state.open){
-			this._hide();
-		} else {
-			this._show();
-		}
-	},
-	_show: function(){
-		this.element.slideDown(150, function(){
-			lightBox._show();
-		});
-		this.state.open = true;
-	},
-	_hide: function(){
-		this.element.slideUp(150, function(){
-			lightBox._hide();
-		});
-		this.state.open = false;
-	},
-	_bindEventHandlers: function(){
-		//close form
-		this.element.find('.exit').click(function(){
-			stripeForm._hide();
-		});
-	}
-};
 
 
 var lightBox = {
@@ -158,13 +118,17 @@ var welcomeForm = {
 	},
 	register: function(){
 		//get data from form
-		userContext.name = this.element.find('.user-name').val();
-		userContext.email = this.element.find('.user-email').val();
+		userContext.userName = this.element.find('.user-name').val();
+		userContext.userEmail = this.element.find('.user-email').val();
 
 		//request user id
 		this._requestUserIdAsync()
 			.then(function(response){
-				userContext.id = response.userId
+				if(response.success){
+					userContext.userId = response.result.userId
+				} else {
+					console.log('error. ' + response.result);
+				}
 			})
 			.error(function(error){
 				//log
@@ -196,30 +160,94 @@ var welcomeForm = {
 	}
 };
 
-var scroll = {
-	content: ".content",
-	top: function(){
-		if($('.content').scrollTop() > 0){
-			this._scrollPage('.content', 500);
-		}
+var disclaimerForm = {
+
+	state: {
+		ready: false
 	},
-	disclaimer: function(){
-		this._scrollPage('.disclaimer-wrapper', 500);
+	element: null,
+	agree: null,
+	init: function(){
+		this.element = $('.disclaimer-form');
+		this._bindEventHandlers();
+		this.state.ready = true;
 	},
-	payment: function(){
-		this._scrollPage('.payment-wrapper', 500);
+	agree: function(){
+		
 	},
-	_scrollPage: function(selector, time){
-		var target = $(selector);
-		target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-		if (target.length) {
-			$('html, body').animate({
-				scrollTop: target.offset().top
-			}, time);
-			return false;
-		}
+	_agreeAsync: function(){
+		return new Promise(function(resolve,reject){
+			$.ajax({
+				url: "/register",
+				method: "POST",
+				data: userContext,
+				success: function(res){
+					resolve(res);
+				},
+				error: function(err){
+					reject(err);
+				}
+			});
+		});
+	},
+	_bindEventHandlers: function(){
+		this.element.find('button').click(function(){
+			disclaimerForm.agree();
+		});
 	}
-}
+};
+
+var stripeForm = {
+
+	state: {
+		ready: false,
+		open: false
+	},
+	element: null,
+	init: function(){
+		this.element = $('.payment-form');
+		this._bindEventHandlers();
+		this.state.ready = true;
+	},
+	pay: function(){
+		//get token
+
+		//send token to server
+
+		//show thankyou
+	},
+	close: function(){
+		this.element.find('.exit').click();
+	},
+	toggle: function(){
+		if(this.state.open){
+			this._hide();
+		} else {
+			this._show();
+		}
+	},
+	_payAsync: function(){
+
+	},
+	_show: function(){
+		this.element.slideDown(150, function(){
+			lightBox._show();
+		});
+		this.state.open = true;
+	},
+	_hide: function(){
+		this.element.slideUp(150, function(){
+			lightBox._hide();
+		});
+		this.state.open = false;
+	},
+	_bindEventHandlers: function(){
+		//close form
+		this.element.find('.exit').click(function(){
+			stripeForm._hide();
+		});
+	}
+};
 
 
 var scroll = {
