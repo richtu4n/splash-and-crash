@@ -21,13 +21,15 @@ var stripe = {
 		}
 	},
 	_show: function(){
-		this.element.animate({ marginBottom: '0' }, 150);
-		lightBox._show();
+		this.element.animate({ marginBottom: '0' }, 150, function(){
+			lightBox._show();
+		});
 		this.state.open = true;
 	},
 	_hide: function(){
-		this.element.animate({ marginBottom: '-100%' }, 150);
-		lightBox._hide();
+		this.element.animate({ marginBottom: '-100%' }, 150, function(){
+			lightBox._hide();
+		});
 		this.state.open = false;
 	}
 };
