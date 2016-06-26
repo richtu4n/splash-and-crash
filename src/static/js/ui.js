@@ -8,11 +8,17 @@ $(document).ready(function(){
 var stripeForm = {
 
 	state: {
+		ready: false,
 		open: false
 	},
 	element: null,
 	init: function(){
 		this.element = $('.payment-form');
+		this._bindEventHandlers();
+		this.ready = true;
+	},
+	close: function(){
+		this.element.find('.exit').click();
 	},
 	toggle: function(){
 		if(this.state.open){
@@ -32,6 +38,12 @@ var stripeForm = {
 			lightBox._hide();
 		});
 		this.state.open = false;
+	},
+	_bindEventHandlers: function(){
+		//close form
+		this.element.find('.exit').click(function(){
+			stripeForm._hide();
+		});
 	}
 };
 
