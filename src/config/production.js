@@ -2,5 +2,5 @@ module.exports = {
     logger: {
         enabled: ['debug', 'info', 'warn', 'error']
     },
-    port: 3031
+    port: 3030
 };
