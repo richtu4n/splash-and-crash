@@ -12,9 +12,11 @@ $(document).ready(function(){
 });
 
 var userContext = {
-	name: null,
-	email: null,
-	id: null
+	userName: null,
+	userEmail: null,
+	userId: null,
+	agree: null,
+	stripeToken: null
 }
 
 var stripeForm = {
@@ -158,14 +160,14 @@ var welcomeForm = {
 	},
 	register: function(){
 		//get data from form
-		userContext.name = this.element.find('.user-name').val();
-		userContext.email = this.element.find('.user-email').val();
+		userContext.userName = this.element.find('.user-name').val();
+		userContext.userEmail = this.element.find('.user-email').val();
 
 		//request user id
 		this._requestUserIdAsync()
 			.then(function(response){
 				if(response.success){
-					userContext.id = response.result.userId
+					userContext.userId = response.result.userId
 				} else {
 					console.log('error. ' + response.result);
 				}
