@@ -19,6 +19,8 @@ var app = koa();
 
 //routes
 router.get('/', routes.home);
+router.post('/register', routes.register);
+router.post('/agreetandcs', routes.agreetandcs);
 router.post('/pay', routes.pay);
 
 //middleware
