@@ -7,7 +7,7 @@ module.exports.send = function (token) {
 	return new Promise(function(resolve, reject){
 		
 		var charge = stripe.charges.create({
-		  	amount: 10000, // amount in cents, again
+		  	amount: 1000, // amount in cents, again
 		  	currency: "gbp",
 		  	source: token,
 		  	description: "Example charge"
