@@ -1,11 +1,12 @@
 /* ---------- reset form styles --------- */
 
-.payment-form{
+.payment-form,
+.welcome-form {
 	color: #555;
 	font-family: 'Lato', sans-serif;
 }
 
-.payment-form input {
+input {
 	padding: 0;
 	margin: 0;
 	border: none;
@@ -13,7 +14,7 @@
 	color: #555;
 }
 
-.payment-form input:focus {
+input:focus{
 	padding: 0;
 	margin: 0;
 	border: none;
@@ -21,7 +22,7 @@
 	color: #555;
 }
 
-button.submit {
+button {
 	background-color: white;
 	border: none;
 }
@@ -29,6 +30,10 @@ button.submit {
 
 
 /* ------------ layout styles ------------- */
+
+/*body { 
+    overflow: hidden;
+}*/
 
 .site-title {
 	position: fixed;
@@ -38,7 +43,7 @@ button.submit {
 }
 
 .background{
-	position: absolute;
+	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -65,6 +70,13 @@ button.submit {
 	z-index: -1;
 }
 
+.content {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 2;
+}
+
 .layout-wrapper {
 	display: flex;
 	align-items: center;
@@ -72,10 +84,10 @@ button.submit {
 	height: 100vh;
 	width: 100vw;
 	position: relative;
-	z-index: 2;
 }
 
-.payment-wrapper {
+.payment-wrapper,
+.welcome-wrapper {
 	width: 440px;
 	margin: 0 10%;
 }
@@ -150,11 +162,36 @@ button.submit {
 
 /* ---------- form styles ------------- */
 
-.payment-form {
+.payment-form,
+.welcome-form {
 	font-weight: 400;
 	font-size: 14px;
 }
 
+.welcome-form input,
+.welcome-form input:focus,
+.welcome-form button {
+	width: 100%;
+	padding: 10px;
+	font-size: 18px;
+	font-weight: 100;
+	margin-bottom: 21px;
+	color: #555;
+	border-radius: 4px;
+}
+
+.welcome-form button {
+	border-radius: 0;
+	/*background-color: rgb(53,154,213);*/
+	background-color: rgb(229, 151, 0);
+	color: rgb(255,255,255);
+	text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+	font-weight: 300;
+}
+.welcome-form button:hover{
+	cursor: pointer;
+	box-shadow: 0px 0px 1px #fff;
+}
 
 /*form header*/
 

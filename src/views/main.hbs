@@ -19,68 +19,69 @@
 				<div class="bounce3"></div>
 			</div>
 		</div>
-		<div class="layout-wrapper">
 
-		<!-- WELCOME FORM -->
-			<div class="welcome-wrapper">
-				
+		<div class="content">
+
+			<!-- WELCOME FORM -->
+			<div class="layout-wrapper">
+				<div class="welcome-wrapper">
+					<div class="welcome-form">
+						<input type="text" class="user-name" placeholder="Your name..">
+						<input type="text" class="user-email" placeholder="Your email..">
+						<button class="user-register">Register</button>
+					</div>
+				</div>
 			</div>
 
-		<!-- DISCLAIMER FORM -->
-			<div class="disclaimer-wrapper"></div>
-
-		<!-- PAYMENT FORM -->
-			<div class="payment-wrapper">
-				<form action="/pay" method="POST" class="payment-form">
-					
-					<!-- form header -->
-					<div class="form-header">
-						<img class="stripe-logo" src="static/img/stripe.svg" />
-						<i class="fa fa-lock" aria-hidden="true"></i>
-						<i class="fa fa-times exit" aria-hidden="true"></i>
-					</div>
-
-					<!-- form body -->
-					<div class="form-body">
-						<div><label>Card number</label><input type="text" data-stripe="number"></div>
-						<div class="flex-container">
-							<div class="flex-item"><label>Expiry</label><div class="flex-container">
-								<input class="exp-month" type="text" data-stripe="exp_month" placeholder="MM">
-								<input class="exp-year" type="text" data-stripe="exp_year" placeholder="YY">
-							</div></div>
-							<div class="flex-item"><label>Security code</label><input type="text" data-stripe="cvc" placeholder="CVC"></div>
+			<!-- DISCLAIMER FORM -->
+			<div class="layout-wrapper">
+				<div class="disclaimer-wrapper"></div>
+			</div>
+			
+			<!-- PAYMENT FORM -->
+			<div class="layout-wrapper">
+				<div class="payment-wrapper">
+					<form action="/pay" method="POST" class="payment-form">
+						
+						<!-- form header -->
+						<div class="form-header">
+							<img class="stripe-logo" src="static/img/stripe.svg" />
+							<i class="fa fa-lock" aria-hidden="true"></i>
+							<i class="fa fa-times exit" aria-hidden="true"></i>
 						</div>
-					</div>
 
-					<!-- form footer -->
-					<div class="form-footer">
-						<div class="spacer"></div>
-						<button class="submit" type="submit" value="Pay £10.00">
-							<i class="fa fa-check" aria-hidden="true"></i>Pay  £10.00
-						</button>
-						<div class="payment-errors"></div>
-					</div>
+						<!-- form body -->
+						<div class="form-body">
+							<div><label>Card number</label><input type="text" data-stripe="number"></div>
+							<div class="flex-container">
+								<div class="flex-item"><label>Expiry</label><div class="flex-container">
+									<input class="exp-month" type="text" data-stripe="exp_month" placeholder="MM">
+									<input class="exp-year" type="text" data-stripe="exp_year" placeholder="YY">
+								</div></div>
+								<div class="flex-item"><label>Security code</label><input type="text" data-stripe="cvc" placeholder="CVC"></div>
+							</div>
+						</div>
 
-				</form>
+						<!-- form footer -->
+						<div class="form-footer">
+							<div class="spacer"></div>
+							<button class="submit" type="submit" value="Pay £10.00">
+								<i class="fa fa-check" aria-hidden="true"></i>Pay  £10.00
+							</button>
+							<div class="payment-errors"></div>
+						</div>
+
+					</form>
+				</div>
 			</div>
-
 		</div>
+
 		<script type="text/javascript" src="static/js/jquery-3.0.0.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.1/bluebird.min.js"></script>
 		<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 		<script type="text/javascript" src="static/js/payment.js"></script>
 		<script src="https://use.fontawesome.com/c2a5f27e67.js"></script>
-		<script src="static/js/ui.js"></script>>
-		<div>
-			<!-- <div>Card number:</div>
-			<input type="text" size="20" data-stripe="number" placeholder="xxxx xxxx xxxx xxxx">
-			<div>Name on card:</div>
-			<input type="text" size="20">
-			<div>Expiry:</div>
-			<input type="text" size="2" data-stripe="exp_month" placeholder="MM">
-			<input type="text" size="2" data-stripe="exp_year" placeholder="YY">
-			<div>Security code:</div>
-			<input type="text" size="4" data-stripe="cvc" placeholder="CVC"> -->
-		</div>
+		<script src="static/js/ui.js"></script>
 	</body>
 	
 </html>
