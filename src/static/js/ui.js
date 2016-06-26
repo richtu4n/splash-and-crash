@@ -3,6 +3,7 @@ $(document).ready(function(){
 	stripeForm.init();
 	lightBox.init();
 	loader.init();
+	background.init();
 });
 
 var stripeForm = {
@@ -15,7 +16,7 @@ var stripeForm = {
 	init: function(){
 		this.element = $('.payment-form');
 		this._bindEventHandlers();
-		this.ready = true;
+		this.state.ready = true;
 	},
 	close: function(){
 		this.element.find('.exit').click();
@@ -51,11 +52,13 @@ var stripeForm = {
 var lightBox = {
 
 	state: {
-		open: false
+		open: false,
+		ready: false
 	},
 	element: null,
 	init: function(){
 		this.element = $('.light-box');
+		this.state.ready = true;
 	},
 	toggle: function(){
 		if(this.state.open){
@@ -66,10 +69,12 @@ var lightBox = {
 	},
 	_show: function(){
 		this.element.css('z-index', '1');
+		background.blur(true);
 		this.state.open = true;
 	},
 	_hide: function(){
 		this.element.css('z-index', '-1');
+		background.blur(false);
 		this.state.open = false;
 	}
 };
@@ -77,11 +82,13 @@ var lightBox = {
 var loader = {
 
 	state: {
-		open: false
+		open: false,
+		ready: false
 	},
 	element: null,
 	init: function(){
 		this.element = $('.loader');
+		this.state.ready = true;
 	},
 	toggle: function(){
 		if(this.state.open){
@@ -101,3 +108,25 @@ var loader = {
 		this.state.open = false;
 	}
 };
+
+
+var background = {
+
+	state: {
+		ready: false,
+		blur: false
+	},
+	element: null,
+	init: function(){
+		this.element = $('.background');
+		this.state.ready = true;
+	},
+	blur: function(bool){
+		if(bool){
+			this.element.attr('style', '-webkit-filter: blur(10px);-moz-filter: blur(10px);-o-filter: blur(10px);-ms-filter: blur(10px);filter: blur(10px);');
+		} else {
+			this.element.removeAttr('style');
+		}
+	}
+};
+
