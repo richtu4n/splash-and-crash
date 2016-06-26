@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node --harmony src/server.js",
+    "start": "export ENV=production; node --harmony src/server.js",
     "dev": "nodemon --watch . --watch views -e js,hbs,css --harmony src/server.js"
   },
   "author": "",
