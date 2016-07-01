@@ -19,7 +19,7 @@ module.exports.register = function *() {
 
 	var _user = yield mongo.db.users.findOne({ userId: userId });
 	if (_user) {
-		this.body = { result: 'User has already been registered!', success: false };
+		this.body = { result: { userId: userId }, success: true };
 	} else {
 		yield mongo.db.users.insert({ userId: userId, userName: userName, userEmail: userEmail });
 		this.body = { result: { userId: userId }, success: true };
@@ -41,13 +41,26 @@ module.exports.pay = function *() {
 	try {
 		var userId = this.request.body.userId;
 		var stripeToken = this.request.body.stripeToken;
+		//yield mongo.db.payments.
 
 		var stripeResponse = yield payments.send(stripeToken);
 
-		yield mongo.db.payments.insert({ userId: userId, stripeToken: stripeToken });
+		//yield mongo.db.payments.insert({ userId: userId, stripeToken: stripeToken, stripeResponse: stripeResponse });
 
-		this.body = { result: response, success: true };
+		this.body = { result: {message: "Payment approved!"}, success: true };
+
 	} catch (err) {
-		this.body = { result: err, success: false };
+		this.body = { result: {error: err, message: err.message}, success: false };
 	}
 };
+
+
+// user = {
+// 	userName: ,
+// 	userEmail: ,
+// 	agree: ,
+// 	stripeToken: ,
+// 	paymentSuccess: 
+// }
+
+

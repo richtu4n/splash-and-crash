@@ -3,8 +3,8 @@
 .payment-form,
 .welcome-form,
 .disclaimer-form {
-	color: #555;
-	font-family: 'Lato', sans-serif;
+	color: #777;
+	font-family: 'Josefin Sans', sans-serif;
 }
 
 input {
@@ -12,7 +12,7 @@ input {
 	margin: 0;
 	border: none;
 	box-sizing: border-box;
-	color: #555;
+	color: #777;
 }
 
 input:focus{
@@ -20,7 +20,7 @@ input:focus{
 	margin: 0;
 	border: none;
 	box-sizing: border-box;
-	color: #555;
+	color: #777;
 }
 
 button {
@@ -123,9 +123,10 @@ button {
 }
 
 .background{
-	background-image: url('../img/background.jpg');
+	background-image: url('../img/water.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	box-shadow: inset 0 0 20px #000;
 	-webkit-filter: blur(5px);
 	-moz-filter: blur(5px);
 	-o-filter: blur(5px);
@@ -183,29 +184,26 @@ button {
 	width: 100%;
 	padding: 10px;
 	font-size: 18px;
-	font-weight: 100;
+	font-weight: 300;
 	margin-bottom: 21px;
-	color: #555;
+	color: #777;
 	border-radius: 4px;
 }
 
 .disclaimer-form ul {
 	font-weight: 100;
+	list-style: none;
+	padding-left: 0px;
+	font-size: 20px;
 }
 
 .disclaimer-form h1 {
 	/*text-align: center;*/
 }
 
-.disclaimer-form i.fa-gavel {
+.disclaimer-form i {
 	font-size: 15px;
 	margin-right: 10px;
-}
-
-.disclaimer-form ul {
-	list-style: none;
-	padding-left: 20px;
-	font-size: 20px;
 }
 
 .welcome-form button,
@@ -241,7 +239,7 @@ button {
 	color: #999;
 }
 .fa-times:hover{
-	color: #555;
+	color: #777;
 	cursor: pointer;
 }
 
@@ -311,6 +309,8 @@ button.submit:hover{
 }
 
 .payment-errors {
+	margin-top: 10px;
+	margin-bottom: -10px;
 }
 
 
