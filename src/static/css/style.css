@@ -1,3 +1,14 @@
+/* ------------ temporary styles ---------- */
+
+.welcome-wrapper,
+.disclaimer-wrapper,
+.payment-wrapper,
+.thankyou-wrapper {
+	display: none;
+}
+
+
+
 /* ---------- reset form styles --------- */
 
 .payment-form,
@@ -93,9 +104,9 @@ button {
 	width: 440px;
 	margin: 0 10%;
 }
-.payment-form{
+/*.payment-form{
 	display: none;
-}
+}*/
 .stripe-logo {
 	top: 20px;
 	left: 16px;
@@ -313,6 +324,22 @@ button.submit:hover{
 	margin-bottom: -10px;
 }
 
+
+/* ---------------- thankyou ------------------ */
+.thankyou-wrapper .smiley {
+
+    color: white;
+    font-size: 70px;
+    text-align: center;
+    font-weight: 100;
+}
+
+.thankyou-wrapper h1 {
+	color: white;
+    font-family: 'Josefin sans';
+    font-weight: 100;
+    font-size: 60px;
+}
 
 /* ----------------- media queries ------------ */
 

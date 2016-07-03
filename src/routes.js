@@ -55,12 +55,5 @@ module.exports.pay = function *() {
 };
 
 
-// user = {
-// 	userName: ,
-// 	userEmail: ,
-// 	agree: ,
-// 	stripeToken: ,
-// 	paymentSuccess: 
-// }
 
 

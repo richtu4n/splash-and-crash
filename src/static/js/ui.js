@@ -2,14 +2,17 @@
 $(document).ready(function(){
 
 	stripeForm.init();
-	lightBox.init();
-	loader.init();
+	//lightBox.init();
+	//loader.init();
 	background.init();
 	welcomeForm.init();
 	disclaimerForm.init();
-	setTimeout(function(){
-		scroll.top();
-	},700);
+	thankyou.init();
+	// setTimeout(function(){
+	// 	scroll.top();
+	// },700);
+
+	welcomeForm.show();
 });
 
 var userContext = {
@@ -27,19 +30,20 @@ var lightBox = {
 		open: false,
 		ready: false
 	},
+	selector: ".light-box",
 	element: null,
 	init: function(){
-		this.element = $('.light-box');
+		this.element = $(this.selector);
 		this.state.ready = true;
 	},
 	toggle: function(){
 		if(this.state.open){
-			this._hide();
+			this.hide();
 		} else {
-			this._show();
+			this.show();
 		}
 	},
-	_show: function(zindex){
+	show: function(zindex){
 		if(!zindex){
 			zindex = 1;
 		}
@@ -47,7 +51,7 @@ var lightBox = {
 		background.blur(true);
 		this.state.open = true;
 	},
-	_hide: function(){
+	hide: function(){
 		this.element.css('z-index', -1);
 		background.blur(false);
 		this.state.open = false;
@@ -67,21 +71,21 @@ var loader = {
 	},
 	toggle: function(){
 		if(this.state.open){
-			this._hide();
+			this.hide();
 		} else {
-			this._show();
+			this.show();
 		}
 	},
-	_show: function(){
+	show: function(){
 		this.element.css('z-index', '5');
-		lightBox._show(5);
+		lightBox.show(5);
 		this.state.open = true;
 	},
-	_hide: function(){
+	hide: function(){
 		this.element.css('z-index', '-1');
-		lightBox._hide();
+		lightBox.hide();
 		if(stripeForm.state.open){
-			lightBox._show();
+			lightBox.show();
 		}
 		this.state.open = false;
 	}
@@ -111,29 +115,31 @@ var background = {
 var welcomeForm = {
 
 	state: {
-		ready: false
+		ready: false,
+		open: false
 	},
+	selector: ".welcome-wrapper",
 	element: null,
 	userId: null,
 	init: function(){
-		this.element = $('.welcome-form');
+		this.element = $(this.selector);
 		this._bindEventHandlers();
 		this.state.ready = true;
 	},
 	register: function(){
+		var _ = this;
 		//get data from form
-		userContext.userName = this.element.find('.user-name').val();
-		userContext.userEmail = this.element.find('.user-email').val();
+		userContext.userName = _.element.find('.user-name').val();
+		userContext.userEmail = _.element.find('.user-email').val();
 
 		//request user id
-		loader._show();
-		this._requestUserIdAsync()
+		_._requestUserIdAsync()
 			.then(function(response){
 				console.log(response);
-				loader._hide();
 				if(response.success){
 					userContext.userId = response.result.userId; //store userId
-					scroll.disclaimer(); //scroll to disclaimer form
+					_.hide();
+					disclaimerForm.show();
 				} else {
 					console.log('error. ' + response.result);
 					//handle error
@@ -142,6 +148,14 @@ var welcomeForm = {
 			.error(function(error){
 				console.log(error);
 			});
+	},
+	show: function(){
+		this.element.show();
+		this.state.open = true;
+	},
+	hide: function(){
+		this.element.hide();
+		this.state.open = false;
 	},
 	_requestUserIdAsync: function(){
 		return new Promise(function(resolve,reject){
@@ -168,24 +182,25 @@ var welcomeForm = {
 var disclaimerForm = {
 
 	state: {
-		ready: false
+		ready: false,
+		open: false
 	},
+	selector: ".disclaimer-wrapper",
 	element: null,
 	init: function(){
-		this.element = $('.disclaimer-form');
+		this.element = $(this.selector);
 		this._bindEventHandlers();
 		this.state.ready = true;
 	},
 	agree: function(){
+		var _ = this;
 		userContext.agree = true;
-		loader._show();
-		this._agreeAsync()
+		_._agreeAsync()
 			.then(function(res){
 				console.log(res);
-				loader._hide();
 				if(res.success){
-					scroll.payment();
-					stripeForm._show();
+					_.hide();
+					stripeForm.show();
 				} else {
 					//handle error message
 				}
@@ -193,6 +208,14 @@ var disclaimerForm = {
 				console.log(err);
 				//handle error
 			});
+	},
+	show: function(){
+		this.element.show();
+		this.state.open = true;
+	},
+	hide: function(){
+		this.element.hide();
+		this.state.open = false;
 	},
 	_agreeAsync: function(){
 		return new Promise(function(resolve,reject){
@@ -222,10 +245,11 @@ var stripeForm = {
 		ready: false,
 		open: false
 	},
+	selector: ".payment-wrapper",
 	element: null,
 	init: function(){
 		var _ = this;
-		_.element = $('.payment-form');
+		_.element = $(this.selector);
 		_._bindEventHandlers();
 		_.state.ready = true;
 	},
@@ -243,7 +267,6 @@ var stripeForm = {
 	},
 	_getToken: function(){
 		var _ = this;
-		loader._show();
 
 		// Disable the submit button to prevent repeated clicks:
     	_.element.find('.submit').prop('disabled', true);
@@ -252,7 +275,7 @@ var stripeForm = {
 		_.element.find('.payment-errors').text('');
 
 		//get token
-		_._requestTokenAsync(_.element)
+		_._requestTokenAsync(_.element.find('form'))
     		.then(function(res){
     			userContext.stripeToken = res.result.stripeToken; //store stripeToken
     			stripeForm.pay(); //recall pay to send payment to server
@@ -260,7 +283,6 @@ var stripeForm = {
     			//display errors on form
     			stripeForm.element.find('.payment-errors').text(err.result.message);
     			stripeForm.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
-    			loader._hide();
     		});
 	},
 	_requestPayment: function(){
@@ -272,13 +294,16 @@ var stripeForm = {
     			if(!res.success){
     				_.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
     				userContext.stripeToken = null;	
-    			}	
+    			} else {
+    				_.hide();
+    				thankyou.show();
+    			}
     		}).catch(function(err){
     			console.log(err);
     			_.element.find('.payment-errors').text("Error. service not available.");
 
     		}).finally(function(){
-    			loader._hide();
+
     		});
 	},
 	close: function(){
@@ -287,9 +312,9 @@ var stripeForm = {
 	toggle: function(){
 		var _ = this;
 		if(_.state.open){
-			_._hide();
+			_.hide();
 		} else {
-			_._show();
+			_.show();
 		}
 	},
 	_requestTokenAsync: function(form){
@@ -318,22 +343,19 @@ var stripeForm = {
 			});
 		});
 	},
-	_show: function(){
-		this.element.slideDown(150, function(){
-			lightBox._show();
-		});
+	show: function(){
+		this.element.show();
 		this.state.open = true;
 	},
-	_hide: function(){
-		this.element.slideUp(150, function(){
-			lightBox._hide();
-		});
+	hide: function(){
+		this.element.hide();
 		this.state.open = false;
 	},
 	_bindEventHandlers: function(){
 		//close form
 		this.element.find('.exit').click(function(){
-			stripeForm._hide();
+			stripeForm.hide();
+			welcomeForm.show();
 		});
 
 		//pay
@@ -376,3 +398,28 @@ var scroll = {
 		}
 	}
 }
+
+
+var thankyou = {
+
+	state: {
+		ready: false,
+		open: false
+	},
+	selector: ".thankyou-wrapper",
+	element: null,
+	init: function(){
+		this.element = $(this.selector);
+		this.state.ready = true;
+	},
+	show: function(){
+		this.element.show();
+		this.state.open = true;
+	},
+	hide: function(){
+		this.element.hide();
+		this.state.open = false;
+	}
+};
+
+
