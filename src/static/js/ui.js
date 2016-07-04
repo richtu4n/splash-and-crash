@@ -2,15 +2,12 @@
 $(document).ready(function(){
 
 	stripeForm.init();
-	//lightBox.init();
-	//loader.init();
+	lightBox.init();
+	loader.init();
 	background.init();
 	welcomeForm.init();
 	disclaimerForm.init();
 	thankyou.init();
-	// setTimeout(function(){
-	// 	scroll.top();
-	// },700);
 
 	welcomeForm.show();
 });
@@ -128,6 +125,9 @@ var welcomeForm = {
 	},
 	register: function(){
 		var _ = this;
+
+		loader.show();
+
 		//get data from form
 		userContext.userName = _.element.find('.user-name').val();
 		userContext.userEmail = _.element.find('.user-email').val();
@@ -143,10 +143,13 @@ var welcomeForm = {
 				} else {
 					console.log('error. ' + response.result);
 					//handle error
+					//show thankyou but render error message?
 				}
 			})
-			.error(function(error){
+			.catch(function(error){
 				console.log(error);
+			}).finally(function (){
+				loader.hide();
 			});
 	},
 	show: function(){
@@ -194,6 +197,9 @@ var disclaimerForm = {
 	},
 	agree: function(){
 		var _ = this;
+
+		//loader.show();
+
 		userContext.agree = true;
 		_._agreeAsync()
 			.then(function(res){
@@ -207,6 +213,8 @@ var disclaimerForm = {
 			}).catch(function(err){
 				console.log(err);
 				//handle error
+			}).finally(function(){
+				//loader.hide();
 			});
 	},
 	show: function(){
@@ -268,6 +276,8 @@ var stripeForm = {
 	_getToken: function(){
 		var _ = this;
 
+		loader.show();
+
 		// Disable the submit button to prevent repeated clicks:
     	_.element.find('.submit').prop('disabled', true);
 
@@ -280,16 +290,23 @@ var stripeForm = {
     			userContext.stripeToken = res.result.stripeToken; //store stripeToken
     			stripeForm.pay(); //recall pay to send payment to server
     		}).catch(function(err){
+    			loader.hide();
     			//display errors on form
     			stripeForm.element.find('.payment-errors').text(err.result.message);
     			stripeForm.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
+    		}).finally(function(){
+
     		});
 	},
 	_requestPayment: function(){
 		var _ = this;
+
+		loader.show();
+
     	this._payAsync()
     		.then(function(res){
 
+    			loader.hide();
     			_.element.find('.payment-errors').text(res.result.message);
     			if(!res.success){
     				_.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
@@ -301,9 +318,10 @@ var stripeForm = {
     		}).catch(function(err){
     			console.log(err);
     			_.element.find('.payment-errors').text("Error. service not available.");
+    			loader.hide();
 
     		}).finally(function(){
-
+    			
     		});
 	},
 	close: function(){
@@ -414,10 +432,12 @@ var thankyou = {
 	},
 	show: function(){
 		this.element.show();
+		lightBox.show();
 		this.state.open = true;
 	},
 	hide: function(){
 		this.element.hide();
+		lightBox.hide();
 		this.state.open = false;
 	}
 };

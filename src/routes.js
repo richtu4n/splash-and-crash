@@ -33,23 +33,32 @@ module.exports.agreetandcs = function *() {
 	if (!_user) {
 		this.body = { result: "User doesn't exist!", success: false };
 	} else {
-		yield mongo.db.users.updateOne({ userId: userId }, { agree: agree }, { upsert: true });
+		yield mongo.db.users.updateOne({ userId: userId }, { $set: { agree: agree } });
 		this.body = { success: true };
 	}
 };
 module.exports.pay = function *() {
 	try {
-		var userId = this.request.body.userId;
+		var userId    = this.request.body.userId;
 		var stripeToken = this.request.body.stripeToken;
-		//yield mongo.db.payments.
 
 		var stripeResponse = yield payments.send(stripeToken);
 
-		//yield mongo.db.payments.insert({ userId: userId, stripeToken: stripeToken, stripeResponse: stripeResponse });
+		yield mongo.db.users.updateOne(
+			{ userId: userId }, 
+			{ $set: { paid: true, stripeToken: stripeToken, stripeResponse: stripeResponse } }, 
+			{upsert: true}
+		);
+
 
 		this.body = { result: {message: "Payment approved!"}, success: true };
 
 	} catch (err) {
+		yield mongo.db.users.updateOne(
+			{ userId: userId }, 
+			{ $set: { paid: false, stripeToken: stripeToken, stripeResponse: err } }, 
+			{upsert: true}
+		);
 		this.body = { result: {error: err, message: err.message}, success: false };
 	}
 };

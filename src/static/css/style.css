@@ -49,7 +49,7 @@ button {
 
 .site-title {
 	position: fixed;
-	top: 10vh;
+	top: 5vh;
 	width: 100%;
 	text-align: center;
 }
@@ -179,8 +179,8 @@ button {
 .payment-form,
 .welcome-form,
 .disclaimer-form {
-	font-weight: 400;
-	font-size: 14px;
+	font-weight: 300;
+	font-size: 20px;
 }
 
 .disclaimer-form {
@@ -194,7 +194,7 @@ button {
 .disclaimer-form button {
 	width: 100%;
 	padding: 10px;
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: 300;
 	margin-bottom: 21px;
 	color: #777;
@@ -202,10 +202,14 @@ button {
 }
 
 .disclaimer-form ul {
-	font-weight: 100;
+	font-weight: 300;
 	list-style: none;
 	padding-left: 0px;
 	font-size: 20px;
+}
+
+.disclaimer-form li {
+	display: flex;
 }
 
 .disclaimer-form h1 {
@@ -334,11 +338,18 @@ button.submit:hover{
     font-weight: 100;
 }
 
-.thankyou-wrapper h1 {
+.thankyou-wrapper .smiley {
 	color: white;
-    font-family: 'Josefin sans';
+    font-family: 'Lobster';
     font-weight: 100;
-    font-size: 60px;
+    font-size: 90px;
+}
+
+.thankyou-wrapper h2 {
+	color: white;
+    font-family: 'Lobster';
+    font-weight: 100;
+    font-size: 40px;
 }
 
 /* ----------------- media queries ------------ */
