@@ -1,6 +1,6 @@
 /* ------------ temporary styles ---------- */
 
-.welcome-wrapper,
+.register-wrapper,
 .disclaimer-wrapper,
 .payment-wrapper,
 .thankyou-wrapper {
@@ -12,7 +12,7 @@
 /* ---------- reset form styles --------- */
 
 .payment-form,
-.welcome-form,
+.register-form,
 .disclaimer-form {
 	color: #777;
 	font-family: 'Josefin Sans', sans-serif;
@@ -99,7 +99,7 @@ button {
 }
 
 .payment-wrapper,
-.welcome-wrapper,
+.register-wrapper,
 .disclaimer-wrapper {
 	width: 440px;
 	margin: 0 10%;
@@ -176,21 +176,18 @@ button {
 
 /* ---------- form styles ------------- */
 
+/*generic*/
+
 .payment-form,
-.welcome-form,
+.register-form,
 .disclaimer-form {
 	font-weight: 300;
 	font-size: 20px;
 }
 
-.disclaimer-form {
-	color: #fff;
-	text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
-}
-
-.welcome-form input,
-.welcome-form input:focus,
-.welcome-form button,
+.register-form input,
+.register-form input:focus,
+.register-form button,
 .disclaimer-form button {
 	width: 100%;
 	padding: 10px;
@@ -199,6 +196,38 @@ button {
 	margin-bottom: 21px;
 	color: #777;
 	border-radius: 4px;
+}
+
+.register-form button,
+.disclaimer-form button {
+	border-radius: 0;
+	background-color: rgb(229, 151, 0);
+	color: rgb(255,255,255);
+	text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+	font-weight: 300;
+}
+
+.register-form button:hover,
+.disclaimer-form button:hover {
+	cursor: pointer;
+	box-shadow: 0px 0px 1px #fff;
+}
+
+/*register*/
+
+.register-errors {
+    color: white;
+    font-weight: 300;
+    font-family: 'josefin sans';
+    font-size: 18px;
+}
+
+
+/*disclaimer*/
+
+.disclaimer-form {
+	color: #fff;
+	text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
 }
 
 .disclaimer-form ul {
@@ -221,20 +250,8 @@ button {
 	margin-right: 10px;
 }
 
-.welcome-form button,
-.disclaimer-form button {
-	border-radius: 0;
-	/*background-color: rgb(53,154,213);*/
-	background-color: rgb(229, 151, 0);
-	color: rgb(255,255,255);
-	text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
-	font-weight: 300;
-}
-.welcome-form button:hover,
-.disclaimer-form button:hover {
-	cursor: pointer;
-	box-shadow: 0px 0px 1px #fff;
-}
+
+/*payment*/
 
 /*form header*/
 
@@ -306,10 +323,12 @@ button.submit {
 	background-color: rgb(53,154,213);
 	color: rgb(255,255,255);
 	font-weight: 400;
+	font-size: 18px;
 }
 button.submit:hover{
 	cursor: pointer;
 	background-color: rgba(53,154,213,0.8);
+	font-size: 18px;
 }
 .form-footer .spacer {
 	height: 16px;
@@ -329,26 +348,30 @@ button.submit:hover{
 }
 
 
-/* ---------------- thankyou ------------------ */
-.thankyou-wrapper .smiley {
+/*message form*/
 
-    color: white;
-    font-size: 70px;
-    text-align: center;
-    font-weight: 100;
+.message-wrapper .smiley,
+.message-wrapper .message,
+.message-wrapper .error {
+	color: white;
+	font-weight: 100;
+	text-align: center;
 }
 
-.thankyou-wrapper .smiley {
-	color: white;
+.message-wrapper .smiley {
     font-family: 'Lobster';
-    font-weight: 100;
     font-size: 90px;
+    margin-bottom: 20px;
 }
 
-.thankyou-wrapper h2 {
-	color: white;
+.message-wrapper .message{
     font-family: 'Lobster';
-    font-weight: 100;
+    font-size: 40px;
+    
+}
+
+.message-wrapper .error{
+    font-family: 'Josefin Sans', sans-serif;
     font-size: 40px;
 }
 

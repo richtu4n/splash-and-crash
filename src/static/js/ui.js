@@ -5,18 +5,18 @@ $(document).ready(function(){
 	lightBox.init();
 	loader.init();
 	background.init();
-	welcomeForm.init();
+	registerForm.init();
 	disclaimerForm.init();
-	thankyou.init();
+	message.init();
 
-	welcomeForm.show();
+	registerForm.show();
 });
 
 var userContext = {
 	userName: null,
 	userEmail: null,
-	userId: null,
-	agree: null,
+	userAgree: null,
+	paid: false,
 	stripeToken: null
 }
 
@@ -109,13 +109,13 @@ var background = {
 	}
 };
 
-var welcomeForm = {
+var registerForm = {
 
 	state: {
 		ready: false,
 		open: false
 	},
-	selector: ".welcome-wrapper",
+	selector: ".register-wrapper",
 	element: null,
 	userId: null,
 	init: function(){
@@ -129,27 +129,27 @@ var welcomeForm = {
 		loader.show();
 
 		//get data from form
-		userContext.userName = _.element.find('.user-name').val();
-		userContext.userEmail = _.element.find('.user-email').val();
+		userContext.userName = _.element.find('.user-name').val().toLowerCase();
+		userContext.userEmail = _.element.find('.user-email').val().toLowerCase();
 
 		//request user id
 		_._requestUserIdAsync()
 			.then(function(response){
 				console.log(response);
-				if(response.success){
-					userContext.userId = response.result.userId; //store userId
+				loader.hide();
+				if(response.success == true){
+					userContext = response.result;
 					_.hide();
 					disclaimerForm.show();
 				} else {
-					console.log('error. ' + response.result);
 					//handle error
-					//show thankyou but render error message?
+					_._updateError(response.result);
 				}
 			})
 			.catch(function(error){
 				console.log(error);
-			}).finally(function (){
 				loader.hide();
+				_._updateError('Error. Service not available.')
 			});
 	},
 	show: function(){
@@ -159,6 +159,10 @@ var welcomeForm = {
 	hide: function(){
 		this.element.hide();
 		this.state.open = false;
+	},
+	_updateError: function(message){
+		var _ = this;
+		_.element.find('.register-errors').html(message);
 	},
 	_requestUserIdAsync: function(){
 		return new Promise(function(resolve,reject){
@@ -176,8 +180,9 @@ var welcomeForm = {
 		});
 	},
 	_bindEventHandlers: function(){
-		this.element.find('button').click(function(){
-			welcomeForm.register();
+		var _ = this;
+		_.element.find('button').click(function(){
+			_.register();
 		});
 	}
 };
@@ -200,7 +205,7 @@ var disclaimerForm = {
 
 		//loader.show();
 
-		userContext.agree = true;
+		userContext.userAgree = true;
 		_._agreeAsync()
 			.then(function(res){
 				console.log(res);
@@ -213,16 +218,16 @@ var disclaimerForm = {
 			}).catch(function(err){
 				console.log(err);
 				//handle error
-			}).finally(function(){
-				//loader.hide();
 			});
 	},
 	show: function(){
 		this.element.show();
+		lightBox.show();
 		this.state.open = true;
 	},
 	hide: function(){
 		this.element.hide();
+		lightBox.hide();
 		this.state.open = false;
 	},
 	_agreeAsync: function(){
@@ -294,8 +299,6 @@ var stripeForm = {
     			//display errors on form
     			stripeForm.element.find('.payment-errors').text(err.result.message);
     			stripeForm.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
-    		}).finally(function(){
-
     		});
 	},
 	_requestPayment: function(){
@@ -307,21 +310,22 @@ var stripeForm = {
     		.then(function(res){
 
     			loader.hide();
-    			_.element.find('.payment-errors').text(res.result.message);
+    			
     			if(!res.success){
+    				_.element.find('.payment-errors').text(res.result.message);
     				_.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
     				userContext.stripeToken = null;	
     			} else {
+    				_.element.find('.payment-errors').text(res.result);
     				_.hide();
-    				thankyou.show();
+    				message.update();
+    				message.show();
     			}
     		}).catch(function(err){
     			console.log(err);
     			_.element.find('.payment-errors').text("Error. service not available.");
     			loader.hide();
 
-    		}).finally(function(){
-    			
     		});
 	},
 	close: function(){
@@ -363,10 +367,12 @@ var stripeForm = {
 	},
 	show: function(){
 		this.element.show();
+		lightBox.show();
 		this.state.open = true;
 	},
 	hide: function(){
 		this.element.hide();
+		lightBox.hide();
 		this.state.open = false;
 	},
 	_bindEventHandlers: function(){
@@ -418,17 +424,26 @@ var scroll = {
 }
 
 
-var thankyou = {
+var message = {
 
 	state: {
 		ready: false,
 		open: false
 	},
-	selector: ".thankyou-wrapper",
+	smiley: ":)",
+	message: "Thankyou!",
+	error: "",
+	selector: ".message-wrapper",
 	element: null,
 	init: function(){
 		this.element = $(this.selector);
 		this.state.ready = true;
+	},
+	update: function(){
+		var _ = this;
+		_.element.find('.smiley').html(_.smiley);
+		_.element.find('.message').html(_.message);
+		_.element.find('.error').html(_.error);
 	},
 	show: function(){
 		this.element.show();
