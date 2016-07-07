@@ -447,7 +447,6 @@ var stripeForm = {
     				_.updateError(res.result.message);
     			} 
     			else {
-    				alert('Payment approved!');
     				_.enable();
     				app.clear();
     				messageForm.update(":)", "Thankyou!", "");
@@ -460,8 +459,8 @@ var stripeForm = {
     		}).catch(function(err){
     			app.dump(err);
     			loader.hide();
-    			// _.updateError("Error. service not available.");
-    			_.updateError(JSON.stringify(err));
+    			_.updateError("Error. Service not available.");
+    			//_.updateError(JSON.stringify(err));
     		});
 	},
 	close: function(){
