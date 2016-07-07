@@ -13,6 +13,8 @@ var routes       = require('./routes');
 var pay          = require('./utilities/payments');
 var config       = require('./config/config');
 var mongo        = require('./mongo/connection');
+var http         = require('http');
+var https        = require('https');
 var enforceHttps = require('koa-sslify');
 
 //exports
@@ -27,23 +29,25 @@ router.post('/pay', routes.pay);
 
 //middleware
 app.use(koaLogger());
-app.use(enforceHttps({
-  trustProtoHeader: true
-}));
+app.use(enforceHttps());
 app.use(koaBody({ formidable: { uploadDir: __dirname } }));
 app.use(hbs.middleware({viewPath: __dirname + '/views'}));
 app.use(serve({rootDir: __dirname + "/static", rootPath: "/static"}));
 app.use(router.routes());
 
+var options = {
+    key: fs.readFileSync('/root/splashandcrash/keys/server.key'),
+    cert: fs.readFileSync('/root/splashandcrash/keys/server.csr')
+};
 
 //------------------------------------------------------------------------------
 
 async (function () {
 	await (mongo.init());
 
-	app.listen(config.port, function () {
-		log.info('Server running on port: ' + config.port + '.');
-	});
+	http.createServer(app.callback()).listen(80);
+	https.createServer(options, app.callback()).listen(443);
+
 })();
 
 
