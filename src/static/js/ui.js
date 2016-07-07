@@ -121,6 +121,11 @@ var registerForm = {
 	register: function(){
 		var _ = this;
 
+		if(!_._validate()){
+			_.updateError("Please enter your name and email");
+			return;
+		}
+
 		loader.show();
 
 		//get data from form
@@ -131,14 +136,18 @@ var registerForm = {
 		_._requestUserIdAsync()
 			.then(function(response){
 				app.dump(response);
-				loader.hide();
-				if(response.success == true){
-					userContext = response.result;
-					preferenceForm.show();
-					preferenceForm.updateValues();
-				} else {
-					_.updateError(response.result);
-				}
+				app.pause(500)
+				.then(function(){
+					loader.hide();
+					if(response.success == true){
+						userContext = response.result;
+						preferenceForm.updateValues();
+						preferenceForm.show();
+
+					} else {
+						_.updateError(response.result);
+					}
+				});
 			})
 			.catch(function(error){
 				app.dump(error);
@@ -185,6 +194,16 @@ var registerForm = {
 		_.element.find('button').click(function(){
 			_.register();
 		});
+	},
+	_validate: function(){
+		var _ = this;
+		var userName = _.element.find('.user-name').val();
+		var userEmail = _.element.find('.user-email').val();
+		if(userName == "" || userEmail == ""){
+			return false;
+		} else {
+			return true;
+		}
 	}
 };
 
@@ -218,12 +237,15 @@ var preferenceForm = {
 		_._sendPrefAsync()
 			.then(function(response){
 				app.dump(response);
-				loader.hide();
-				if(response.success == true){
-					disclaimerForm.show();
-				} else {
-					_.updateError(response.result);
-				}
+				app.pause(500)
+				.then(function(){
+					loader.hide();
+					if(response.success == true){
+						disclaimerForm.show();
+					} else {
+						_.updateError(response.result);
+					}
+				});
 			})
 			.catch(function(error){
 				app.dump(error);
@@ -296,17 +318,21 @@ var disclaimerForm = {
 	agree: function(){
 		var _ = this;
 
-		//loader.show();
+		loader.show();
 
 		userContext.userAgree = true;
 		_._agreeAsync()
 			.then(function(res){
 				app.dump(res);
-				if(res.success){
-					stripeForm.show();
-				} else {
-					//handle error message
-				}
+				app.pause(500)
+				.then(function(){
+					loader.hide();
+					if(res.success){
+						stripeForm.show();
+					} else {
+						//handle error message
+					}
+				});
 			}).catch(function(err){
 				app.dump(err);
 				//handle error
@@ -635,6 +661,13 @@ var app = {
 		if(this.debug){
 			console.log(obj);
 		}
+	},
+	pause: function(time){
+		return new Promise(function(resolve, reject){
+			window.setTimeout(function(){
+				resolve();
+			},time)
+		});
 	}
 }
 
