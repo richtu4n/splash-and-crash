@@ -152,7 +152,8 @@ var registerForm = {
 			.catch(function(error){
 				app.dump(error);
 				loader.hide();
-				_.updateError('Error. Service not available.')
+				_.updateError(error);
+				//_.updateError('Error. Service not available.');
 			});
 	},
 	show: function(){
