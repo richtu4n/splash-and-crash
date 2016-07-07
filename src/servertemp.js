@@ -30,7 +30,7 @@ router.post('/pay', routes.pay);
 
 //middleware
 app.use(koaLogger());
-//app.use(enforceHttps());
+app.use(enforceHttps());
 app.use(koaBody({ formidable: { uploadDir: __dirname } }));
 app.use(hbs.middleware({viewPath: __dirname + '/views'}));
 app.use(serve({rootDir: __dirname + "/static", rootPath: "/static"}));
@@ -43,13 +43,10 @@ var options = {
 
 //------------------------------------------------------------------------------
 
-async (function () {
-	await (mongo.init());
-
+mongo.init().then(function () {
 	http.createServer(app.callback()).listen(80);
 	https.createServer(options, app.callback()).listen(443);
-
-})();
+});
 
 
 //-------------------------------------------------------------------------------
