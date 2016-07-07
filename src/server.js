@@ -46,8 +46,11 @@ var options = {
 async (function () {
 	await (mongo.init());
 
-	http.createServer(app.callback()).listen(80);
-	https.createServer(options, app.callback()).listen(443);
+	app.listen(options, config.port, function () {
+		log.info('Server running on port: ' + config.port + '.');
+	});
+	//http.createServer(app.callback()).listen(80);
+	//https.createServer(options, app.callback()).listen(443);
 
 })();
 
