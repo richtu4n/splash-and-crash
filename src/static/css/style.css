@@ -370,6 +370,7 @@ button.submit:hover{
 .payment-wrapper .errors {
 	margin-top: 10px;
 	margin-bottom: -10px;
+	color: #777;
 }
 
 
@@ -398,7 +399,6 @@ button.submit:hover{
 .message-wrapper .error{
     font-family: 'Josefin Sans', sans-serif;
     font-size: 40px;
-    color: #777;
 }
 
 /* ----------------- media queries ------------ */
