@@ -449,11 +449,11 @@ var stripeForm = {
     			else {
     				_.clear();
     				_.enable();
-    				message.update(":)", "Thankyou!", null, function(){
-    					message.hide();
-    					app.clear();
-    					registerForm.show();
-    				});
+    				// message.update(":)", "Thankyou!", null, function(){
+    				// 	message.hide();
+    				// 	app.clear();
+    				// 	registerForm.show();
+    				// });
     			}
     		}).catch(function(err){
     			app.dump(err);
