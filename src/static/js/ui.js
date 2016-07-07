@@ -451,8 +451,7 @@ var stripeForm = {
     				_.enable();
     				app.clear();
     				messageForm.update(":)", "Thankyou!", "");
-    				registerForm.show();
-    				// message.show();
+    				messageForm.show();
     			}
     		}).catch(function(err){
     			app.dump(err);
