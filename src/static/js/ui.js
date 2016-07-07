@@ -449,13 +449,10 @@ var stripeForm = {
     			else {
     				alert('Payment approved!');
     				_.enable();
-    				alert('enabled button');
     				app.clear();
-    				alert('app cleared');
     				registerForm.show();
-    				alert('registerForm show');
-    				// _.enable();
     				// message.update(":)", "Thankyou!", "");
+    				// message.show();
     			}
     		}).catch(function(err){
     			app.dump(err);
