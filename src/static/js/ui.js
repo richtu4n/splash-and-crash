@@ -457,6 +457,7 @@ var stripeForm = {
     			app.dump(err);
     			app.pause(500)
 				.then(function(){
+					alert(JSON.stringify(err));
 					_.updateError("Error. service not available.");
     				loader.hide();
 				});
