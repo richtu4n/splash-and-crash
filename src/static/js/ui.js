@@ -408,22 +408,16 @@ var stripeForm = {
 		loader.show();
     	_.disable();
 
-    	//hide old errors
-		_.updateError('');
-
 		//get token
 		_._requestTokenAsync(_.element.find('form'))
     		.then(function(res){
     			userContext.stripeToken = res.result.stripeToken;
-	    		_.pay(); //recall pay to send payment to server
+    			_.pay(); //recall pay to send payment to server
     		})
     		.catch(function(err){
-    			app.pause(500)
-    			.then(function(){
-    				loader.hide();
-	    			_.updateError(err.result.message);
-	    			_.enable();
-    			});	
+    			loader.hide();
+    			_.updateError(err.result.message);
+    			_.enable();
     		});
 	},
 	_requestPayment: function(){
@@ -437,12 +431,9 @@ var stripeForm = {
     			loader.hide();
     			
     			if(!res.success){
-    				app.pause(500)
-    				.then(function(){
-    					userContext.stripeToken = null;	
-	    				_.updateError(res.result.message);
-	    				_.enable();
-    				});		
+    				userContext.stripeToken = null;	
+    				_.updateError(res.result.message);
+    				_.enable();	
     			} 
     			else {
     				_.clear();
@@ -455,12 +446,8 @@ var stripeForm = {
     			}
     		}).catch(function(err){
     			app.dump(err);
-    			app.pause(500)
-				.then(function(){
-					alert(JSON.stringify(err));
-					_.updateError("Error. service not available.");
-    				loader.hide();
-				});
+    			_.updateError("Error. service not available.");
+    			loader.hide();
     		});
 	},
 	close: function(){
@@ -489,7 +476,8 @@ var stripeForm = {
 	},
 	updateError: function(message){
 		var _ = this;
-		_.element.find('.errors').text(message);
+		alert(message);
+		//_.element.find('.errors').text(message);
 	},
 	_requestTokenAsync: function(form){
 		return new Promise(function(resolve,reject){
