@@ -37,8 +37,8 @@ app.use(serve({rootDir: __dirname + "/static", rootPath: "/static"}));
 app.use(router.routes());
 
 var options = {
-    key: fs.readFileSync('/root/splashandcrash/keys/server.key'),
-    cert: fs.readFileSync('/root/splashandcrash/keys/server.csr')
+    key: fs.readFileSync('/root/splash-and-crash/keys/server.key'),
+    cert: fs.readFileSync('/root/splash-and-crash/keys/server.csr')
 };
 
 //------------------------------------------------------------------------------
