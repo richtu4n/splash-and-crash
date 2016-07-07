@@ -136,7 +136,7 @@ var registerForm = {
 		_._requestUserIdAsync()
 			.then(function(response){
 				app.dump(response);
-				app.pause(500)
+				app.pause(1000)
 				.then(function(){
 					loader.hide();
 					if(response.success == true){
@@ -237,7 +237,7 @@ var preferenceForm = {
 		_._sendPrefAsync()
 			.then(function(response){
 				app.dump(response);
-				app.pause(500)
+				app.pause(1000)
 				.then(function(){
 					loader.hide();
 					if(response.success == true){
@@ -324,7 +324,7 @@ var disclaimerForm = {
 		_._agreeAsync()
 			.then(function(res){
 				app.dump(res);
-				app.pause(500)
+				app.pause(1000)
 				.then(function(){
 					loader.hide();
 					if(res.success){
@@ -415,12 +415,15 @@ var stripeForm = {
 		_._requestTokenAsync(_.element.find('form'))
     		.then(function(res){
     			userContext.stripeToken = res.result.stripeToken;
-    			_.pay(); //recall pay to send payment to server
+	    		_.pay(); //recall pay to send payment to server
     		})
     		.catch(function(err){
-    			loader.hide();
-    			_.updateError(err.result.message);
-    			_.enable();
+    			app.pause(500)
+    			.then(function(){
+    				loader.hide();
+	    			_.updateError(err.result.message);
+	    			_.enable();
+    			});	
     		});
 	},
 	_requestPayment: function(){
@@ -434,9 +437,12 @@ var stripeForm = {
     			loader.hide();
     			
     			if(!res.success){
-    				userContext.stripeToken = null;	
-    				_.updateError(res.result.message);
-    				_.enable();	
+    				app.pause(500)
+    				.then(function(){
+    					userContext.stripeToken = null;	
+	    				_.updateError(res.result.message);
+	    				_.enable();
+    				});		
     			} 
     			else {
     				_.clear();
@@ -449,8 +455,11 @@ var stripeForm = {
     			}
     		}).catch(function(err){
     			app.dump(err);
-    			_.updateError("Error. service not available.");
-    			loader.hide();
+    			app.pause(500)
+				.then(function(){
+					_.updateError("Error. service not available.");
+    				loader.hide();
+				});
     		});
 	},
 	close: function(){
