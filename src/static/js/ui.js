@@ -582,6 +582,7 @@ var messageForm = {
 		ready: false,
 		open: false
 	},
+	selector: ".message-wrapper",
 	element: null,
 	init: function(){
 		this.element = $(this.selector);
