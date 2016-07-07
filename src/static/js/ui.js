@@ -295,6 +295,11 @@ var preferenceForm = {
 			});
 		});
 	},
+	updateError: function(message){
+		var _ = this;
+		alert(message);
+		//_.element.find('.errors').text(message);
+	},
 	_bindEventHandlers: function(){
 		var _ = this;
 		_.element.find('button').click(function(){
@@ -331,12 +336,12 @@ var disclaimerForm = {
 					if(res.success){
 						stripeForm.show();
 					} else {
-						//handle error message
+						_.updateError('Error. Service not available.');
 					}
 				});
 			}).catch(function(err){
 				app.dump(err);
-				//handle error
+				_.updateError(JSON.stringify(err));
 			});
 	},
 	show: function(){
@@ -369,6 +374,11 @@ var disclaimerForm = {
 				}
 			});
 		});
+	},
+	updateError: function(message){
+		var _ = this;
+		alert(message);
+		//_.element.find('.errors').text(message);
 	},
 	_bindEventHandlers: function(){
 		this.element.find('button').click(function(){
@@ -449,6 +459,7 @@ var stripeForm = {
     			app.dump(err);
     			loader.hide();
     			_.updateError("Error. service not available.");
+    			_.updateError(JSON.stringify(err));
     		});
 	},
 	close: function(){
