@@ -447,13 +447,13 @@ var stripeForm = {
     				_.updateError(res.result.message);
     			} 
     			else {
-    				_.clear();
+    				//_.clear();
     				_.enable();
-    				// message.update(":)", "Thankyou!", null, function(){
-    				// 	message.hide();
-    				// 	app.clear();
-    				// 	registerForm.show();
-    				// });
+    				message.update(":)", "Thankyou!", "", function(){
+    					//message.hide();
+    					app.clear();
+    					registerForm.show();
+    				});
     			}
     		}).catch(function(err){
     			app.dump(err);
@@ -489,7 +489,6 @@ var stripeForm = {
 	updateError: function(message){
 		var _ = this;
 		alert(message);
-		//_.element.find('.errors').text(message);
 	},
 	_requestTokenAsync: function(form){
 		return new Promise(function(resolve,reject){
@@ -585,10 +584,6 @@ var message = {
 		ready: false,
 		open: false
 	},
-	smiley: ":)",
-	message: "Thankyou!",
-	error: "",
-	selector: ".message-wrapper",
 	element: null,
 	init: function(){
 		this.element = $(this.selector);
