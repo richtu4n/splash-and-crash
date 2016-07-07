@@ -450,7 +450,7 @@ var stripeForm = {
     				alert('Payment approved!');
     				_.enable();
     				app.clear();
-    				message.update(":)", "Thankyou!", "");
+    				messageForm.update(":)", "Thankyou!", "");
     				registerForm.show();
     				// message.show();
     			}
@@ -577,7 +577,7 @@ var scroll = {
 }
 
 
-var message = {
+var messageForm = {
 
 	state: {
 		ready: false,
@@ -619,7 +619,7 @@ var app = {
 		preferenceForm,
 		disclaimerForm,
 		stripeForm,
-		message
+		messageForm
 	],
 	elements: [
 		lightBox,
