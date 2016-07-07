@@ -447,21 +447,20 @@ var stripeForm = {
     				_.updateError(res.result.message);
     			} 
     			else {
-    				alert('Payment approved!');
     				_.enable();
-    				alert('enabled button');
     				app.clear();
-    				alert('app cleared');
-    				registerForm.show();
-    				alert('registerForm show');
-    				// _.enable();
-    				// message.update(":)", "Thankyou!", "");
+    				messageForm.update(":)", "Thankyou!", "");
+    				messageForm.show();
+    				app.pause(2000)
+    				.then(function(){
+    					registerForm.show();
+    				});
     			}
     		}).catch(function(err){
     			app.dump(err);
     			loader.hide();
-    			// _.updateError("Error. service not available.");
-    			_.updateError(JSON.stringify(err));
+    			_.updateError("Error. Service not available.");
+    			//_.updateError(JSON.stringify(err));
     		});
 	},
 	close: function(){
@@ -580,12 +579,13 @@ var scroll = {
 }
 
 
-var message = {
+var messageForm = {
 
 	state: {
 		ready: false,
 		open: false
 	},
+	selector: ".message-wrapper",
 	element: null,
 	init: function(){
 		this.element = $(this.selector);
@@ -622,7 +622,7 @@ var app = {
 		preferenceForm,
 		disclaimerForm,
 		stripeForm,
-		message
+		messageForm
 	],
 	elements: [
 		lightBox,
