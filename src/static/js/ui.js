@@ -449,10 +449,9 @@ var stripeForm = {
     			else {
     				alert('Payment approved!');
     				_.enable();
-    				//placeholder
     				app.clear();
+    				message.update(":)", "Thankyou!", "");
     				registerForm.show();
-    				// message.update(":)", "Thankyou!", "");
     				// message.show();
     			}
     		}).catch(function(err){
