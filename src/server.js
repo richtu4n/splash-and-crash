@@ -15,6 +15,7 @@ var config       = require('./config/config');
 var mongo        = require('./mongo/connection');
 var http         = require('http');
 var https        = require('https');
+var fs           = require('fs');
 var enforceHttps = require('koa-sslify');
 
 //exports
