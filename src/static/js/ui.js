@@ -159,6 +159,7 @@ var registerForm = {
 	clear: function(){
 		var _ = this;
 		_.element.find('input').val('');
+		_.element.find('.errors').text('');
 	},
 	updateError: function(message){
 		var _ = this;
@@ -243,6 +244,7 @@ var preferenceForm = {
 	clear: function(){
 		var _ = this;
 		_.element.find('input').val('');
+		_.element.find('.errors').text('');
 	},
 	updateValues: function(){
 		var _ = this;
@@ -322,6 +324,9 @@ var disclaimerForm = {
 		_.element.hide();
 		_.state.open = false;
 		lightBox.hide();
+	},
+	clear: function(){
+		return;
 	},
 	_agreeAsync: function(){
 		return new Promise(function(resolve,reject){
@@ -412,7 +417,7 @@ var stripeForm = {
     				_.enable();
     				message.update(":)", "Thankyou!", null, function(){
     					message.hide();
-    					registerForm.clear();
+    					app.clear();
     					registerForm.show();
     				});
     			}
@@ -436,6 +441,7 @@ var stripeForm = {
 	clear: function(){
 		var _ = this;
 		_.element.find('input').val('');
+		_.element.find('.errors').text('');
 	},
 	enable: function(){
 		var _ = this;
@@ -575,6 +581,9 @@ var message = {
 		_.state.open = false;
 		lightBox.hide();
 	},
+	clear: function(){
+		return;
+	}
 };
 
 var app = {
@@ -612,6 +621,14 @@ var app = {
 		for(i=0; i<_.forms.length; i++){
 			var form = _.forms[i];
 			form.hide();
+		}
+	},
+	clear: function(){
+		var _ = this;
+
+		for(i=0; i<_.forms.length; i++){
+			var form = _.forms[i];
+			form.clear();
 		}
 	},
 	dump: function(obj){
