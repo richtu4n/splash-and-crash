@@ -447,14 +447,15 @@ var stripeForm = {
     				_.updateError(res.result.message);
     			} 
     			else {
-    				_.clear();
-    				_.enable();
-    				message.update(":)", "Thankyou!", "");
+    				alert('Payment approved!');
+    				// _.clear();
+    				// _.enable();
+    				// message.update(":)", "Thankyou!", "");
     			}
     		}).catch(function(err){
     			app.dump(err);
     			loader.hide();
-    			_.updateError("Error. service not available.");
+    			// _.updateError("Error. service not available.");
     			_.updateError(JSON.stringify(err));
     		});
 	},
@@ -590,7 +591,6 @@ var message = {
 		_.element.find('.smiley').html(smiley);
 		_.element.find('.message').html(message);
 		_.element.find('.error').html(error);
-		_.show();
 	},
 	show: function(){
 		var _ = this;
