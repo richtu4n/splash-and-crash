@@ -429,8 +429,7 @@ var stripeForm = {
     		.catch(function(err){
     			loader.hide();
     			_.enable();
-    			console.log(err);
-    			//_.updateError(err.result.message);
+    			_.updateError(err.result.message);
     		});
 	},
 	_requestPayment: function(){
