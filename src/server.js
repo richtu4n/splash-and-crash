@@ -46,7 +46,7 @@ var options = {
 async (function () {
 	await (mongo.init());
 
-	app.listen(options, config.port, function () {
+	app.listen(config.port, function () {
 		log.info('Server running on port: ' + config.port + '.');
 	});
 	//http.createServer(app.callback()).listen(80);
