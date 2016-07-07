@@ -416,8 +416,8 @@ var stripeForm = {
     		})
     		.catch(function(err){
     			loader.hide();
-    			_.updateError(err.result.message);
     			_.enable();
+    			_.updateError(err.result.message);
     		});
 	},
 	_requestPayment: function(){
@@ -431,9 +431,9 @@ var stripeForm = {
     			loader.hide();
     			
     			if(!res.success){
-    				userContext.stripeToken = null;	
+    				userContext.stripeToken = null;
+    				_.enable();
     				_.updateError(res.result.message);
-    				_.enable();	
     			} 
     			else {
     				_.clear();
@@ -446,8 +446,8 @@ var stripeForm = {
     			}
     		}).catch(function(err){
     			app.dump(err);
-    			_.updateError("Error. service not available.");
     			loader.hide();
+    			_.updateError("Error. service not available.");
     		});
 	},
 	close: function(){
@@ -654,6 +654,19 @@ var app = {
 			var form = _.forms[i];
 			form.clear();
 		}
+
+		userContext = {
+			userName: null,
+			userEmail: null,
+			prefDrinks: null,
+			prefFood: null,
+			prefCrash: null,
+			prefIdeas: null,
+			userAgree: null,
+			paid: false,
+			stripeToken: null
+		}
+		
 	},
 	dump: function(obj){
 		if(this.debug){
