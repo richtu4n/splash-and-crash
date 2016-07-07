@@ -1,5 +1,6 @@
 
 $(document).ready(function(){
+	Stripe.setPublishableKey('pk_test_VUq5GazNdBC0SNWYzaIRz9ta');
 	app.init();
 });
 
@@ -428,7 +429,8 @@ var stripeForm = {
     		.catch(function(err){
     			loader.hide();
     			_.enable();
-    			_.updateError(err.result.message);
+    			console.log(err);
+    			//_.updateError(err.result.message);
     		});
 	},
 	_requestPayment: function(){
