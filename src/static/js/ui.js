@@ -448,7 +448,9 @@ var stripeForm = {
     			} 
     			else {
     				alert('Payment approved!');
-    				// _.clear();
+    				_.enable();
+    				app.clear();
+    				registerForm.show();
     				// _.enable();
     				// message.update(":)", "Thankyou!", "");
     			}
