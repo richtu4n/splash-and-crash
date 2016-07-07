@@ -20,6 +20,7 @@ var app = koa();
 //routes
 router.get('/', routes.home);
 router.post('/register', routes.register);
+router.post('/pref', routes.preference);
 router.post('/agreetandcs', routes.agreetandcs);
 router.post('/pay', routes.pay);
 

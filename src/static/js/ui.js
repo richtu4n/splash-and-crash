@@ -1,20 +1,15 @@
 
 $(document).ready(function(){
-
-	stripeForm.init();
-	lightBox.init();
-	loader.init();
-	background.init();
-	registerForm.init();
-	disclaimerForm.init();
-	message.init();
-
-	registerForm.show();
+	app.init();
 });
 
 var userContext = {
 	userName: null,
 	userEmail: null,
+	prefDrinks: null,
+	prefFood: null,
+	prefCrash: null,
+	prefIdeas: null,
 	userAgree: null,
 	paid: false,
 	stripeToken: null
@@ -135,34 +130,39 @@ var registerForm = {
 		//request user id
 		_._requestUserIdAsync()
 			.then(function(response){
-				console.log(response);
+				app.dump(response);
 				loader.hide();
 				if(response.success == true){
 					userContext = response.result;
-					_.hide();
-					disclaimerForm.show();
+					preferenceForm.show();
+					preferenceForm.updateValues();
 				} else {
-					//handle error
-					_._updateError(response.result);
+					_.updateError(response.result);
 				}
 			})
 			.catch(function(error){
-				console.log(error);
+				app.dump(error);
 				loader.hide();
-				_._updateError('Error. Service not available.')
+				_.updateError('Error. Service not available.')
 			});
 	},
 	show: function(){
-		this.element.show();
-		this.state.open = true;
+		var _ = this;
+		app.hideForms();
+		_.element.show();
+		_.state.open = true;
 	},
 	hide: function(){
 		this.element.hide();
 		this.state.open = false;
 	},
-	_updateError: function(message){
+	clear: function(){
 		var _ = this;
-		_.element.find('.register-errors').html(message);
+		_.element.find('input').val('');
+	},
+	updateError: function(message){
+		var _ = this;
+		_.element.find('.errors').html(message);
 	},
 	_requestUserIdAsync: function(){
 		return new Promise(function(resolve,reject){
@@ -183,6 +183,97 @@ var registerForm = {
 		var _ = this;
 		_.element.find('button').click(function(){
 			_.register();
+		});
+	}
+};
+
+
+var preferenceForm = {
+
+	state: {
+		ready: false,
+		open: false
+	},
+	selector: ".preference-wrapper",
+	element: null,
+	userId: null,
+	init: function(){
+		this.element = $(this.selector);
+		this._bindEventHandlers();
+		this.state.ready = true;
+	},
+	next: function(){
+		var _ = this;
+
+		loader.show();
+
+		//get data from form
+		userContext.prefDrinks = _.element.find('.pref-drinks').val().toLowerCase();
+		userContext.prefFood   = _.element.find('.pref-food').val().toLowerCase();
+		userContext.prefCrash  = _.element.find('.pref-crash').val().toLowerCase();
+		userContext.prefIdeas  = _.element.find('.pref-ideas').val().toLowerCase();
+
+		//request user id
+		_._sendPrefAsync()
+			.then(function(response){
+				app.dump(response);
+				loader.hide();
+				if(response.success == true){
+					disclaimerForm.show();
+				} else {
+					_.updateError(response.result);
+				}
+			})
+			.catch(function(error){
+				app.dump(error);
+				loader.hide();
+				_.updateError('Error. Service not available.')
+			});
+	},
+	show: function(){
+		var _ = this;
+		app.hideForms();
+		_.element.show();
+		_.state.open = true;
+	},
+	hide: function(){
+		this.element.hide();
+		this.state.open = false;
+	},
+	clear: function(){
+		var _ = this;
+		_.element.find('input').val('');
+	},
+	updateValues: function(){
+		var _ = this;
+		_.element.find('.pref-drinks').val(userContext.prefDrinks);
+		_.element.find('.pref-food').val(userContext.prefFood);
+		_.element.find('.pref-crash').val(userContext.prefCrash);
+		_.element.find('.pref-ideas').val(userContext.prefIdeas);
+	},
+	updateError: function(message){
+		var _ = this;
+		_.element.find('.errors').html(message);
+	},
+	_sendPrefAsync: function(){
+		return new Promise(function(resolve,reject){
+			$.ajax({
+				url: "/pref",
+				method: "POST",
+				data: userContext,
+				success: function(res){
+					resolve(res);
+				},
+				error: function(err){
+					reject(err);
+				}
+			});
+		});
+	},
+	_bindEventHandlers: function(){
+		var _ = this;
+		_.element.find('button').click(function(){
+			_.next();
 		});
 	}
 };
@@ -208,27 +299,29 @@ var disclaimerForm = {
 		userContext.userAgree = true;
 		_._agreeAsync()
 			.then(function(res){
-				console.log(res);
+				app.dump(res);
 				if(res.success){
-					_.hide();
 					stripeForm.show();
 				} else {
 					//handle error message
 				}
 			}).catch(function(err){
-				console.log(err);
+				app.dump(err);
 				//handle error
 			});
 	},
 	show: function(){
-		this.element.show();
+		var _ = this;
+		app.hideForms();
 		lightBox.show();
-		this.state.open = true;
+		_.element.show();
+		_.state.open = true;
 	},
 	hide: function(){
-		this.element.hide();
+		var _ = this;
+		_.element.hide();
+		_.state.open = false;
 		lightBox.hide();
-		this.state.open = false;
 	},
 	_agreeAsync: function(){
 		return new Promise(function(resolve,reject){
@@ -268,12 +361,12 @@ var stripeForm = {
 	},
 	pay: function(){
 		var _ = this;
-		console.log('pay called');
+		app.dump('pay called');
 		if(!userContext.stripeToken){
-			console.log(' - getting stripeToken');
+			app.dump(' - getting stripeToken');
 			_._getToken();
 		} else {
-			console.log(' - request payment from server');
+			app.dump(' - request payment from server');
 			_._requestPayment();
 		}
 
@@ -282,23 +375,21 @@ var stripeForm = {
 		var _ = this;
 
 		loader.show();
-
-		// Disable the submit button to prevent repeated clicks:
-    	_.element.find('.submit').prop('disabled', true);
+    	_.disable();
 
     	//hide old errors
-		_.element.find('.payment-errors').text('');
+		_.updateError('');
 
 		//get token
 		_._requestTokenAsync(_.element.find('form'))
     		.then(function(res){
-    			userContext.stripeToken = res.result.stripeToken; //store stripeToken
-    			stripeForm.pay(); //recall pay to send payment to server
-    		}).catch(function(err){
+    			userContext.stripeToken = res.result.stripeToken;
+    			_.pay(); //recall pay to send payment to server
+    		})
+    		.catch(function(err){
     			loader.hide();
-    			//display errors on form
-    			stripeForm.element.find('.payment-errors').text(err.result.message);
-    			stripeForm.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
+    			_.updateError(err.result.message);
+    			_.enable();
     		});
 	},
 	_requestPayment: function(){
@@ -306,26 +397,29 @@ var stripeForm = {
 
 		loader.show();
 
-    	this._payAsync()
+    	_._payAsync()
     		.then(function(res){
 
     			loader.hide();
     			
     			if(!res.success){
-    				_.element.find('.payment-errors').text(res.result.message);
-    				_.element.find('button.submit').removeAttr('disabled'); // Re-enable submission
     				userContext.stripeToken = null;	
-    			} else {
-    				_.element.find('.payment-errors').text(res.result);
-    				_.hide();
-    				message.update();
-    				message.show();
+    				_.updateError(res.result.message);
+    				_.enable();	
+    			} 
+    			else {
+    				_.clear();
+    				_.enable();
+    				message.update(":)", "Thankyou!", null, function(){
+    					message.hide();
+    					registerForm.clear();
+    					registerForm.show();
+    				});
     			}
     		}).catch(function(err){
-    			console.log(err);
-    			_.element.find('.payment-errors').text("Error. service not available.");
+    			app.dump(err);
+    			_.updateError("Error. service not available.");
     			loader.hide();
-
     		});
 	},
 	close: function(){
@@ -338,6 +432,22 @@ var stripeForm = {
 		} else {
 			_.show();
 		}
+	},
+	clear: function(){
+		var _ = this;
+		_.element.find('input').val('');
+	},
+	enable: function(){
+		var _ = this;
+		_.element.find('button.submit').removeAttr('disabled');
+	},
+	disable: function(){
+		var _ = this;
+		_.element.find('.submit').prop('disabled', true);
+	},
+	updateError: function(message){
+		var _ = this;
+		_.element.find('.errors').text(message);
 	},
 	_requestTokenAsync: function(form){
 		return new Promise(function(resolve,reject){
@@ -366,25 +476,28 @@ var stripeForm = {
 		});
 	},
 	show: function(){
-		this.element.show();
+		var _ = this;
+		app.hideForms();
 		lightBox.show();
-		this.state.open = true;
+		_.element.show();
+		_.state.open = true;
 	},
 	hide: function(){
-		this.element.hide();
+		var _ = this;
+		_.element.hide();
+		_.state.open = false;
 		lightBox.hide();
-		this.state.open = false;
 	},
 	_bindEventHandlers: function(){
+		var _ = this;
 		//close form
-		this.element.find('.exit').click(function(){
-			stripeForm.hide();
-			welcomeForm.show();
+		_.element.find('.exit').click(function(){
+			registerForm.show();
 		});
 
 		//pay
-		this.element.find('button.submit').click(function(){
-			stripeForm.pay();
+		_.element.find('button.submit').click(function(){
+			_.pay();
     		return false;
 		});
 	}
@@ -396,7 +509,7 @@ var scroll = {
 	top: function(){
 		if(!this._isAtTop()){
 			this._scrollPage(0, 200);
-		} else { console.log('at top'); }
+		} else { app.dump('at top'); }
 	},
 	disclaimer: function(){
 		var position = this._contentHeight();
@@ -439,22 +552,72 @@ var message = {
 		this.element = $(this.selector);
 		this.state.ready = true;
 	},
-	update: function(){
+	update: function(smiley, message, error, callback){
 		var _ = this;
-		_.element.find('.smiley').html(_.smiley);
-		_.element.find('.message').html(_.message);
-		_.element.find('.error').html(_.error);
+		_.element.find('.smiley').html(smiley);
+		_.element.find('.message').html(message);
+		_.element.find('.error').html(error);
+		_.show();
+		if(callback != null){
+			window.setTimeout(callback,2000);
+		}
 	},
 	show: function(){
-		this.element.show();
+		var _ = this;
+		app.hideForms();
 		lightBox.show();
-		this.state.open = true;
+		_.element.show();
+		_.state.open = true;
 	},
 	hide: function(){
-		this.element.hide();
+		var _ = this;
+		_.element.hide();
+		_.state.open = false;
 		lightBox.hide();
-		this.state.open = false;
-	}
+	},
 };
 
+var app = {
+	debug: true,
+	forms: [
+		registerForm,
+		preferenceForm,
+		disclaimerForm,
+		stripeForm,
+		message
+	],
+	elements: [
+		lightBox,
+		loader,
+		background
+	],
+	init: function(){
+		var _ = this;
+
+		for(i=0; i<_.forms.length; i++){
+			var form = _.forms[i];
+			form.init();
+		}
+
+		for(i=0; i<_.elements.length; i++){
+			var element = _.elements[i];
+			element.init();
+		}
+
+		registerForm.show();
+	},
+	hideForms: function(){
+		var _ = this;
+
+		for(i=0; i<_.forms.length; i++){
+			var form = _.forms[i];
+			form.hide();
+		}
+	},
+	dump: function(obj){
+		if(this.debug){
+			console.log(obj);
+		}
+	}
+}
 

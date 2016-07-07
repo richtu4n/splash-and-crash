@@ -32,6 +32,27 @@ module.exports.register = function *() {
 		this.body = { result: userContext, success: true };
 	}
 };
+module.exports.preference = function *() {
+
+	//check we have a user Email
+	var userContext = this.request.body;
+	var userEmail   = userContext.userEmail;
+	var prefDrinks  = userContext.prefDrinks;
+	var prefFood    = userContext.prefFood;
+
+	var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
+	if (!_user) {
+		this.body = { result: "User doesn't exist!", success: false };
+	} else {
+		yield mongo.db.users.updateOne({ userEmail: userEmail }, { $set: { 
+			prefDrinks: userContext.prefDrinks, 
+			prefFood:   userContext.prefFood,
+			prefCrash:  userContext.prefCrash,
+			prefIdeas:  userContext.prefIdeas
+		} });
+		this.body = { success: true };
+	}
+};
 module.exports.agreetandcs = function *() {
 	var userEmail = this.request.body.userEmail;
 	var userAgree = this.request.body.userAgree;

@@ -1,6 +1,7 @@
 /* ------------ temporary styles ---------- */
 
 .register-wrapper,
+.preference-wrapper,
 .disclaimer-wrapper,
 .payment-wrapper,
 .thankyou-wrapper {
@@ -13,12 +14,14 @@
 
 .payment-form,
 .register-form,
+.preference-form,
 .disclaimer-form {
 	color: #777;
 	font-family: 'Josefin Sans', sans-serif;
 }
 
-input {
+input, 
+textarea {
 	padding: 0;
 	margin: 0;
 	border: none;
@@ -26,7 +29,8 @@ input {
 	color: #777;
 }
 
-input:focus{
+input:focus,
+textarea:focus {
 	padding: 0;
 	margin: 0;
 	border: none;
@@ -93,20 +97,20 @@ button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	height: 100vh;
+	margin-top: 15vh;
+	height: 85vh;
 	width: 100vw;
 	position: relative;
 }
 
 .payment-wrapper,
 .register-wrapper,
+.preference-wrapper,
 .disclaimer-wrapper {
 	width: 440px;
 	margin: 0 10%;
 }
-/*.payment-form{
-	display: none;
-}*/
+
 .stripe-logo {
 	top: 20px;
 	left: 16px;
@@ -180,7 +184,8 @@ button {
 
 .payment-form,
 .register-form,
-.disclaimer-form {
+.disclaimer-form,
+.preference-form {
 	font-weight: 300;
 	font-size: 20px;
 }
@@ -188,6 +193,11 @@ button {
 .register-form input,
 .register-form input:focus,
 .register-form button,
+.preference-form input,
+.preference-form input:focus,
+.preference-form textarea,
+.preference-form textarea:focus,
+.preference-form button,
 .disclaimer-form button {
 	width: 100%;
 	padding: 10px;
@@ -199,7 +209,8 @@ button {
 }
 
 .register-form button,
-.disclaimer-form button {
+.disclaimer-form button,
+.preference-form button {
 	border-radius: 0;
 	background-color: rgb(229, 151, 0);
 	color: rgb(255,255,255);
@@ -208,19 +219,20 @@ button {
 }
 
 .register-form button:hover,
-.disclaimer-form button:hover {
+.disclaimer-form button:hover,
+.preference-form button:hover {
 	cursor: pointer;
 	box-shadow: 0px 0px 1px #fff;
 }
 
-/*register*/
 
-.register-errors {
+.errors {
     color: white;
     font-weight: 300;
     font-family: 'josefin sans';
     font-size: 18px;
 }
+
 
 
 /*disclaimer*/
@@ -342,7 +354,7 @@ button.submit:hover{
 	display: inline!important;
 }
 
-.payment-errors {
+.payment-wrapper .errors {
 	margin-top: 10px;
 	margin-bottom: -10px;
 }
