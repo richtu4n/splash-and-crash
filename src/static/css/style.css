@@ -247,6 +247,7 @@ button {
 	list-style: none;
 	padding-left: 0px;
 	font-size: 20px;
+	margin: 0;
 }
 
 .disclaimer-form li {
@@ -254,12 +255,24 @@ button {
 }
 
 .disclaimer-form h1 {
-	/*text-align: center;*/
+	margin: 10px 0;
+}
+.disclaimer-form h1:first-child {
+	margin-top: 0;
+}
+
+.disclaimer-form span {
+	margin: 5px 0;
+}
+
+.disclaimer-form button {
+	margin-top: 10px;
 }
 
 .disclaimer-form i {
 	font-size: 15px;
 	margin-right: 10px;
+	display: none;
 }
 
 
@@ -385,6 +398,7 @@ button.submit:hover{
 .message-wrapper .error{
     font-family: 'Josefin Sans', sans-serif;
     font-size: 40px;
+    color: #777;
 }
 
 /* ----------------- media queries ------------ */
