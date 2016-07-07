@@ -447,13 +447,9 @@ var stripeForm = {
     				_.updateError(res.result.message);
     			} 
     			else {
-    				//_.clear();
+    				_.clear();
     				_.enable();
-    				message.update(":)", "Thankyou!", "", function(){
-    					//message.hide();
-    					app.clear();
-    					registerForm.show();
-    				});
+    				message.update(":)", "Thankyou!", "");
     			}
     		}).catch(function(err){
     			app.dump(err);
@@ -589,15 +585,12 @@ var message = {
 		this.element = $(this.selector);
 		this.state.ready = true;
 	},
-	update: function(smiley, message, error, callback){
+	update: function(smiley, message, error){
 		var _ = this;
 		_.element.find('.smiley').html(smiley);
 		_.element.find('.message').html(message);
 		_.element.find('.error').html(error);
 		_.show();
-		if(callback != null){
-			window.setTimeout(callback,2000);
-		}
 	},
 	show: function(){
 		var _ = this;
