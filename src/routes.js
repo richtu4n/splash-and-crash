@@ -70,12 +70,24 @@ module.exports.pay = function *() {
 		var userEmail   = this.request.body.userEmail;
 		var stripeToken = this.request.body.stripeToken;
 
+		// if user paid, throw Error
+		var user = yield mongo.db.users.findOne({ userEmail: userEmail });
+		if (!user) throw new Error("User with email " +  userEmail + " doesn't exist.");
+		if (user.paid) throw new Error("User with email " + userEmail + " has already paid.");
+		if (user.paying) throw new Error("Transaction for user " + userEmail + " is currently being processed.");
+		// Set user status to paying
+		yield mongo.db.users.updateOne(
+			{ userEmail: userEmail },
+			{ $set: { paying: true } },
+			{ upsert: true }
+		);
+
 		var stripeResponse = yield payments.send(stripeToken);
 
 		yield mongo.db.users.updateOne(
 			{ userEmail: userEmail }, 
-			{ $set: { paid: true, stripeToken: stripeToken} }, 
-			{upsert: true}
+			{ $set: { paid: true, stripeToken: stripeToken, paying: false } }, 
+			{ upsert: true }
 		);
 
 		yield mongo.db.payments.insert({ 
@@ -84,19 +96,24 @@ module.exports.pay = function *() {
 			stripeResponse: stripeResponse
 		});
 
+		// Send email confirmation
+
 		this.body = { result: "Payment approved!", success: true };
 
 	} catch (error) {
 
-		// yield mongo.db.failedPayments.insert({ 
-		// 	userEmail: userEmail,
-		// 	stripeToken: stripeToken,
-		// 	stripeResponse: error
-		// });
+		yield mongo.db.users.updateOne(
+			{ userEmail: userEmail },
+			{ $set: { paying: false } },
+			{ upsert: true }
+		);
+		yield mongo.db.failed_payments.insert({ 
+		    userEmail: userEmail,
+		    stripeToken: stripeToken,
+		    stripeResponse: error
+		});
 		this.body = { result: error, success: false };
 	}
 };
-
-
 
 
