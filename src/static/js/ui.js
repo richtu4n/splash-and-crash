@@ -1,5 +1,5 @@
-var testKey = "pk_test_VUq5GazNdBC0SNWYzaIRz9ta";
-var liveKey = "pk_live_JaZFwZWSBApVh5OgnAfkGeZ6";
+var testKey = "pk_test_UEKEJN67fgfzwmBWaIkQzXcp";
+var liveKey = "pk_live_2s04oTqPOmXdrJjPXgCQGxsL";
 
 
 $(document).ready(function(){
