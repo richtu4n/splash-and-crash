@@ -8,66 +8,79 @@ module.exports.home = function *() {
 };
 
 module.exports.register = function *() {
+	try {
+		var userContext = this.request.body;
+		var userEmail = userContext.userEmail;
+		userContext.paid = JSON.parse(userContext.paid);
+		userContext._id = sha1(userContext.userEmail);
 
-	//check we have a user Email
-	var userContext = this.request.body;
-	var userEmail = userContext.userEmail;
-	userContext.paid = JSON.parse(userContext.paid);
-
-	if (!userEmail) {
-		this.body = { result: 'Please enter your email address', success: false };
-		return;
-	}
-
-	//look for existing user
-	var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
-	if (_user) {
-		if(_user.paid){ // If we find one check paid
-			this.body = {result: 'You have already registered!', success:false}
-		} else {
-			//if not return existing user object
-			this.body = { result: _user, success: true };
+		if (!userEmail) {
+			this.body = { result: 'Please enter your email address', success: false };
+			return;
 		}
-	} else {
-		//create new user
-		yield mongo.db.users.insert(userContext);
-		this.body = { result: userContext, success: true };
+
+		//look for existing user
+		var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
+		if (_user) {
+			if(_user.paid){ // If we find one check paid
+				this.body = {result: 'You have already registered!', success:false}
+			} else {
+				//if not return existing user object
+				this.body = { result: _user, success: true };
+			}
+		} else {
+			//create new user
+			yield mongo.db.users.insert(userContext);
+			this.body = { result: userContext, success: true };
+		}
+
+	} catch (err) {
+		this.body = { result: 'Registration failed.', success: false };
+		return;
 	}
 };
 module.exports.preference = function *() {
 
-	//check we have a user Email
-	var userContext = this.request.body;
-	var userEmail   = userContext.userEmail;
-	var prefDrinks  = userContext.prefDrinks;
-	var prefFood    = userContext.prefFood;
+	try {
+		var userContext = this.request.body;
+		var userEmail   = userContext.userEmail;
+		var prefDrinks  = userContext.prefDrinks;
+		var prefFood    = userContext.prefFood;
 
-	var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
-	if (!_user) {
-		this.body = { result: "User doesn't exist!", success: false };
-	} else {
-		yield mongo.db.users.updateOne({ userEmail: userEmail }, { $set: { 
-			prefDrinks: userContext.prefDrinks, 
-			prefFood:   userContext.prefFood,
-			prefCrash:  userContext.prefCrash,
-			prefIdeas:  userContext.prefIdeas
-		} });
-		this.body = { success: true };
+		var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
+			if (!_user) {
+			this.body = { result: "User doesn't exist!", success: false };
+		} else {
+			yield mongo.db.users.updateOne({ userEmail: userEmail }, { $set: { 
+				prefDrinks: userContext.prefDrinks, 
+				prefFood:   userContext.prefFood,
+				prefCrash:  userContext.prefCrash,
+				prefIdeas:  userContext.prefIdeas
+			} });
+			this.body = { success: true };
+		}
+	} catch (err) {
+		this.body = { result: 'Updating preferences failed.', success: false };
+		return;
 	}
 };
 module.exports.agreetandcs = function *() {
-	var userEmail = this.request.body.userEmail;
-	var userAgree = this.request.body.userAgree;
+	try {
+		var userEmail = this.request.body.userEmail;
+		var userAgree = this.request.body.userAgree;
 
-	var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
-	if (!_user) {
-		this.body = { result: "User doesn't exist!", success: false };
-	} else {
-		yield mongo.db.users.updateOne({ userEmail: userEmail }, { $set: { userAgree: userAgree } });
-		this.body = { success: true };
-	}
+		var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
+		if (!_user) {
+			this.body = { result: "User doesn't exist!", success: false };
+		} else {
+			yield mongo.db.users.updateOne({ userEmail: userEmail }, { $set: { userAgree: userAgree } });
+			this.body = { success: true };
+		}
+	} catch (err) {
+		this.body = { result: 'Agreeing to tsandcs failed.', success: false };
+		return;
+	}	
 };
-
 
 module.exports.pay = function *() {
 	try {
@@ -76,7 +89,6 @@ module.exports.pay = function *() {
 
 	} catch (err) {
 		this.body = { result: 'Missing query parameters userEmail, stripeToken', success: false };
-		log.info(this.body);
 		return;
 	}
 
@@ -89,22 +101,18 @@ module.exports.pay = function *() {
 		)
 	} catch (err) {
 		this.body = { result: err, success: false };
-		log.info(this.body);
 		return;
 	}
 	if (!user) {
 		this.body = { result: "User with email " +  userEmail + " doesn't exist.", success: false };
-		log.info(this.body);
 		return;
 	}
 	if (user.paid) {
 		this.body = { result: "User with email " + userEmail + " has already paid.", success: false };
-		log.info(this.body);
 		return;
 	}
 	if (user.paying) {
 		this.body = { result: "Transaction for user " + userEmail + " is currently being processed.", success: false };
-		log.info(this.body);
 		return;
 	}
 
@@ -118,7 +126,6 @@ module.exports.pay = function *() {
 		);
 	} catch (err) {
 		this.body = { result: err, success: false };
-		log.info(this.body);
 		return;
 	}
 
@@ -139,12 +146,10 @@ module.exports.pay = function *() {
 			);
 		} catch (err) {
 			this.body = { result: err, success: false };
-			log.info(this.body);
 			return;
 		}
 
 		this.body = { result: err.message, success: false };
-		log.info(this.body);
 		return;
 	}
 
@@ -162,14 +167,11 @@ module.exports.pay = function *() {
 		);
 	} catch (err) {
 		this.body = { result: err, success: false };
-		log.info(this.body);
 		return;
 	}
 
-	// Send email confirmation
+	// TODO: Send email confirmation
 
 	this.body = { result: "Payment approved!", success: true };
-	log.info(this.body);
 };
-
 
