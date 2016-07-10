@@ -103,6 +103,10 @@ button {
 	position: relative;
 }
 
+.disclaimer-wrapper {
+	margin-top: 20vh;
+}
+
 .payment-wrapper,
 .register-wrapper,
 .preference-wrapper,
@@ -409,6 +413,10 @@ button.submit:hover{
 	.site-title {
 		top: 5vh;
 		font-size: 70px;
+	}
+
+	.disclaimer-wrapper {
+		margin-top: 0;
 	}
 
 	/*.background{
