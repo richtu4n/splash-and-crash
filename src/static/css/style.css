@@ -103,16 +103,16 @@ button {
 	position: relative;
 }
 
-.disclaimer-wrapper {
-	margin-top: 20vh;
-}
-
 .payment-wrapper,
 .register-wrapper,
 .preference-wrapper,
 .disclaimer-wrapper {
 	width: 440px;
 	margin: 0 10%;
+}
+
+.disclaimer-wrapper {
+	margin-top: 20vh;
 }
 
 .stripe-logo {
@@ -416,7 +416,7 @@ button.submit:hover{
 	}
 
 	.disclaimer-wrapper {
-		margin-top: 0;
+		margin-top: 5vh;
 	}
 
 	/*.background{
