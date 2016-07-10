@@ -19,7 +19,7 @@ module.exports.check = function *() {
 			data = { result: { paid: false }, success: true };
 		}
 	} catch (err) {
-		data = result: err, success: false };
+		data = { result: err, success: false };
 	}
 
 	try {
