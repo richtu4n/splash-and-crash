@@ -1,5 +1,6 @@
 var log = require('./utilities/logger');
 var payments = require('./utilities/payments');
+var email = require('./utilities/email');
 var mongo = require('./mongo/connection');
 var sha1 = require('sha1');
 
@@ -7,6 +8,9 @@ module.exports.home = function *() {
 	yield this.render('main');
 };
 
+module.exports.check = function *() {
+	this.body = 'Hello world';
+};
 module.exports.register = function *() {
 	try {
 		var userContext = this.request.body;
@@ -171,6 +175,7 @@ module.exports.pay = function *() {
 	}
 
 	// TODO: Send email confirmation
+	yield email.sendEmail(userEmail);
 
 	this.body = { result: "Payment approved!", success: true };
 };

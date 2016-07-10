@@ -12,6 +12,7 @@
   "devDependencies": {},
   "dependencies": {
     "asyncawait": "^1.0.3",
+    "aws-sdk": "^2.4.6",
     "bluebird": "^3.4.1",
     "co": "^4.6.0",
     "debug": "^2.2.0",
@@ -26,7 +27,9 @@
     "koa-static-server": "^0.1.8",
     "mongodb": "^2.1.18",
     "ms": "^0.7.1",
+    "nodemailer": "^2.5.0",
     "promise-mongo": "^3.0.3",
+    "qrcode": "^0.4.2",
     "sha1": "^1.1.1",
     "stripe": "^4.7.0"
   }
