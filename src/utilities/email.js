@@ -68,7 +68,7 @@ var sendToOrganiser = function (email, name, prefCrash, prefDrinks, prefFood, pr
 	    	to: 'rpturnbull1@gmail.com,pete.j.turnbull@gmail.com',
 	    	subject: name + ' just paid for Splash & Crash',
 	    	text: '',
-	    	html: '<h1>User Paid</h1><h3>Details</h3><ul style="list-style: none;"><li><strong>Name </strong>' + name + '</li><li><strong>Email </strong>' + email + '</li></ul><h3>Preferences</h3><ul style="list-style: none;"><li><strong>Drinks </strong>' + prefDrinks + '</li><li><strong>Food </strong>' + prefFood + '</li><li><strong>Crash </strong>' + prefCrash + '</li><li><strong>Ideas </strong>' + prefIdeas + '</li></ul>'
+	    	html: '<h1>User Paid</h1><h3>Details</h3><ul style="list-style: none;"><li><strong>Name - </strong>' + name + '</li><li><strong>Email - </strong>' + email + '</li></ul><h3>Preferences</h3><ul style="list-style: none;"><li><strong>Drinks - </strong>' + prefDrinks + '</li><li><strong>Food - </strong>' + prefFood + '</li><li><strong>Crash - </strong>' + prefCrash + '</li><li><strong>Ideas - </strong>' + prefIdeas + '</li></ul>'
 		};
 		transporter.sendMail(mailOptions, function (err, data) {
 	    	if (err) reject(err);
@@ -86,7 +86,7 @@ module.exports.sendEmail = function (email, name, prefCrash, prefDrinks, prefFoo
 				var codeUrl = 'https://s3-' + config.region + '.amazonaws.com/splashandcrash/' + key;
 
 				sendToInvitee(email, name, codeUrl).then(function (data) {
-					sendToOrganiser(email, name, prefCrash, prefDrinks, prefFood, prefIdeas, function (data) {
+					sendToOrganiser(email, name, prefCrash, prefDrinks, prefFood, prefIdeas).then(function (data) {
 						resolve();
 					}, function (err) {
 						reject(err);
