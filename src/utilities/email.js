@@ -46,26 +46,48 @@ var uploadToAws = function (filePath, key) {
 };
 
 
-module.exports.sendEmail = function (email) {
-	return new Promise(function(resolve, reject) {
+var sendToInvitee = function (email, name, codeUrl) {
+	return new Promise(function (resolve, reject) {
+		var mailOptions = {
+	    	from: '"Splash And Crash"',
+	    	to: email,
+	    	subject: 'Welcome to Splash & Crash',
+	    	text: 'Hey, ' + name + '!' + 'Thanks for registering! Here is your code for entry: ' + codeUrl + 'Splash & Crash',
+	    	html: '<h2>Hey, ' + name + '!</h2>' + '<p>Thanks for registering! Here is your code for entry:</p><img style="width: 300px;" src="' + codeUrl + '" alt="QR code link" /><h1>Splash & Crash</h1>'
+		};
+		transporter.sendMail(mailOptions, function (err, data) {
+	    	if (err) reject(err);
+	    	resolve(data);
+		});
+	});
+};
+var sendToOrganiser = function (email, name, prefCrash, prefDrinks, prefFood, prefIdeas) {
+	return new Promise(function (resolve, reject) {
+		var mailOptions = {
+	    	from: '"Splash And Crash"',
+	    	to: 'rpturnbull1@gmail.com,pete.j.turnbull@gmail.com',
+	    	subject: name + ' just paid for Splash & Crash',
+	    	text: '',
+	    	html: '<h1>User Paid</h1><h3>Details</h3><ul style="list-style: none;"><li><strong>Name </strong>' + name + '</li><li><strong>Email </strong>' + email + '</li></ul><h3>Preferences</h3><ul style="list-style: none;"><li><strong>Drinks </strong>' + drinks + '</li><li><strong>Food </strong>' + food + '</li><li><strong>Crash </strong>' + crash + '</li><li><strong>Ideas </strong>' + ideas + '</li></ul>'
+		};
+		transporter.sendMail(mailOptions, function (err, data) {
+	    	if (err) reject(err);
+	    	resolve(data);
+		});
+	});
+};
+
+module.exports.sendEmail = function (email, name, prefCrash, prefDrinks, prefFood, prefIdeas) {
+	return new Promise(function (resolve, reject) {
 
 		_generateQRCode(email).then(function (filePath) {
 			uploadToAws(filePath, sha1(email).replace('/', '=')).then(function (key) {
 
 				var codeUrl = 'https://s3-' + config.region + '.amazonaws.com/splashandcrash/' + key;
 
-				var mailOptions = {
-			    	from: '"Splash And Crash"',
-			    	to: email,
-			    	subject: 'Welcome to Splash & Crash',
-			    	text: 'Splash & Crash. Thanks for registering! Here is your code for entry: ' + codeUrl,
-			    	html: '<h1>Splash & Crash</h1><p>Thanks for registering! Here is your code for entry:</p><img style="width: 300px;" src="' + codeUrl + '" alt="QR code link" />'
-				};
-				transporter.sendMail(mailOptions, function (err, data) {
-			    	if (err) reject(err);
-			    	resolve(data);
-				});
+				sendToInvitee(email, name, codeUrl);
 
+				sendToOrganiser(email, name, prefCrash, prefDrinks, prefFood, prefIdeas);
 
 			}, function (err) {
 				reject(err);

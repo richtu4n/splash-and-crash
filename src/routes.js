@@ -104,7 +104,7 @@ module.exports.pay = function *() {
 		var stripeToken = this.request.body.stripeToken;
 
 	} catch (err) {
-		this.body = { result: 'Missing query parameters userEmail, stripeToken', success: false };
+		this.body = { result: 'Missing parameters userEmail, stripeToken', success: false };
 		return;
 	}
 
@@ -186,8 +186,19 @@ module.exports.pay = function *() {
 		return;
 	}
 
-	// TODO: Send email confirmation
-	yield email.sendEmail(userEmail);
+	try {
+		yield email.sendEmail(userEmail, userName, user.prefCrash, user.prefDrinks, user.prefFood, user.prefIdeas);
+	} catch (err) {
+		try {
+			yield mongo.db.bounced_emails.insert({
+				email: userEmail,
+				name: userName,
+				errorMessage: err
+			});
+		} catch (err) {
+
+		}
+	}
 
 	this.body = { result: "Payment approved!", success: true };
 };
