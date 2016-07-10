@@ -7,10 +7,21 @@ var sha1 = require('sha1');
 module.exports.home = function *() {
 	yield this.render('main');
 };
-
 module.exports.check = function *() {
-	this.body = 'Hello world';
+	try {
+		var email = this.request.body.email;
+
+		var _user = yield mongo.db.users.findOne({ userEmail: email });
+		if (_user) {
+			this.body = { result: { paid: _user.paid, invited: true }, success: true };
+		} else {
+			this.body = { result: { paid: false, invited: false }, success: true };
+		}
+	} catch (err) {
+		this.body = { result: err, success: false };
+	}
 };
+
 module.exports.register = function *() {
 	try {
 		var userContext = this.request.body;
@@ -26,7 +37,7 @@ module.exports.register = function *() {
 		//look for existing user
 		var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
 		if (_user) {
-			if (_user.paid){ // If we find one check paid
+			if (_user.paid) { // If we find one check paid
 				this.body = { result: 'You have already registered!', success:false }
 			} else {
 				//if not return existing user object
@@ -180,4 +191,3 @@ module.exports.pay = function *() {
 
 	this.body = { result: "Payment approved!", success: true };
 };
-

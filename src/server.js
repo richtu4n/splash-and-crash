@@ -19,11 +19,13 @@ var app = koa();
 
 //routes
 router.get('/', routes.home);
+router.get('/check', routes.check);
+
 router.post('/register', routes.register);
 router.post('/pref', routes.preference);
 router.post('/agreetandcs', routes.agreetandcs);
 router.post('/pay', routes.pay);
-router.get('/check', routes.check);
+
 
 //middleware
 app.use(koaLogger());

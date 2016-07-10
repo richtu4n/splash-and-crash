@@ -1,4 +1,5 @@
 .DS_Store
+qrcodes
 node_modules
 nohup.out
 npm-debug.log
