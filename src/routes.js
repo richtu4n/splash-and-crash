@@ -10,15 +10,17 @@ module.exports.home = function *() {
 module.exports.check = function *() {
 	try {
 		var email = this.request.query.email;
+		var data;
 
 		var _user = yield mongo.db.users.findOne({ userEmail: email });
 		if (_user) {
-			this.body = { result: { paid: _user.paid, invited: true }, success: true };
+			data = { paid: _user.paid };
 		} else {
-			this.body = { result: { paid: false, invited: false }, success: true };
+			data = { paid: false };
 		}
+		yield this.render('check', data);
 	} catch (err) {
-		this.body = { result: err, success: false };
+
 	}
 };
 
