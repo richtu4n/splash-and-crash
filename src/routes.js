@@ -85,6 +85,7 @@ module.exports.agreetandcs = function *() {
 module.exports.pay = function *() {
 	try {
 		var userEmail   = this.request.body.userEmail;
+		var userName    = this.request.body.userName;
 		var stripeToken = this.request.body.stripeToken;
 
 	} catch (err) {
@@ -130,7 +131,7 @@ module.exports.pay = function *() {
 	}
 
 	try {
-		var stripeResponse = yield payments.send(stripeToken);
+		var stripeResponse = yield payments.send(stripeToken, userName);
 	} catch (err) {
 
 		try {

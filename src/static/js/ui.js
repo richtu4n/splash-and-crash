@@ -1,6 +1,9 @@
+var testKey = "pk_test_VUq5GazNdBC0SNWYzaIRz9ta";
+var liveKey = "pk_live_JaZFwZWSBApVh5OgnAfkGeZ6";
+
 
 $(document).ready(function(){
-	Stripe.setPublishableKey('pk_test_VUq5GazNdBC0SNWYzaIRz9ta');
+	Stripe.setPublishableKey(testKey);
 	app.init();
 });
 
@@ -121,9 +124,9 @@ var registerForm = {
 	},
 	register: function(){
 		var _ = this;
-
-		if(!_._validate()){
-			_.updateError("Please enter your name and email");
+		var validation = _.validate();
+		if(!validation.success){
+			_.updateError(validation.result);
 			return;
 		}
 
@@ -197,14 +200,39 @@ var registerForm = {
 			_.register();
 		});
 	},
-	_validate: function(){
+	validate: function(){
 		var _ = this;
+
+		//get values
 		var userName = _.element.find('.user-name').val();
 		var userEmail = _.element.find('.user-email').val();
+
 		if(userName == "" || userEmail == ""){
-			return false;
+			return {result: "Please enter your name and email", success: false};
+		}
+
+		if(!validator.isEmail(userEmail)){
+			return {result: "Please enter a valid email address", success: false};
 		} else {
-			return true;
+			return {success: true};
+		}
+	},
+	emailCheck: function(value, expectedValue, expectedMismatch, multiple){
+		i.value = value;
+		i.multiple = !!multiple;
+		var mismatch = i.validity.typeMismatch;
+		var mismatchPass = mismatch == expectedMismatch;
+		var sanitizePass = i.value == expectedValue;
+		var mismatchResult = '"' + value + '" is a ' + (mismatch ? 'invalid' : 'valid') + ' email address' + (multiple ? ' list. ' : '. ');
+		var sanitizeResult = 'It was sanitized to "' + i.value + '"' + (sanitizePass ? '.' : ', but should be sanitized to "' + expectedValue + '"');
+		var result = mismatchResult;
+		if (value != expectedValue || !sanitizePass) {
+			result += sanitizeResult;	
+		}
+		if (mismatchPass && sanitizePass){
+			testPassed(result);
+		} else {
+				testFailed(result);
 		}
 	}
 };
@@ -450,6 +478,7 @@ var stripeForm = {
     			else {
     				_.enable();
     				app.clear();
+    				alert("Payment approved!");
     				messageForm.update(":)", "Thankyou!", "");
     				messageForm.show();
     				app.pause(2000)
