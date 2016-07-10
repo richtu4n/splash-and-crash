@@ -22,8 +22,8 @@ module.exports.register = function *() {
 		//look for existing user
 		var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
 		if (_user) {
-			if(_user.paid){ // If we find one check paid
-				this.body = {result: 'You have already registered!', success:false}
+			if (_user.paid){ // If we find one check paid
+				this.body = { result: 'You have already registered!', success:false }
 			} else {
 				//if not return existing user object
 				this.body = { result: _user, success: true };
