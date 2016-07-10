@@ -9,7 +9,7 @@ module.exports.home = function *() {
 };
 module.exports.check = function *() {
 	try {
-		var email = this.request.body.email;
+		var email = this.request.query.email;
 
 		var _user = yield mongo.db.users.findOne({ userEmail: email });
 		if (_user) {
