@@ -133,7 +133,7 @@ var registerForm = {
 		loader.show();
 
 		//get data from form
-		userContext.userName = _.element.find('.user-name').val().toLowerCase();
+		userContext.userName = _.element.find('.user-name').val();
 		userContext.userEmail = _.element.find('.user-email').val().toLowerCase();
 
 		//request user id
