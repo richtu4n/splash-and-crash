@@ -112,8 +112,7 @@ button {
 }
 
 .disclaimer-wrapper {
-	height: 70vh;
-	overflow: scroll;
+	margin-top: 20vh;
 }
 
 .stripe-logo {
@@ -417,8 +416,7 @@ button.submit:hover{
 	}
 
 	.disclaimer-wrapper {
-		height: 100%;
-		overflow: auto;
+		margin-top: 10vh;
 	}
 
 	/*.background{
