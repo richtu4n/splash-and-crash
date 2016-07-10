@@ -85,16 +85,20 @@ module.exports.sendEmail = function (email, name, prefCrash, prefDrinks, prefFoo
 
 				var codeUrl = 'https://s3-' + config.region + '.amazonaws.com/splashandcrash/' + key;
 
-				sendToInvitee(email, name, codeUrl);
-
-				sendToOrganiser(email, name, prefCrash, prefDrinks, prefFood, prefIdeas);
-
+				sendToInvitee(email, name, codeUrl).then(function (data) {
+					sendToOrganiser(email, name, prefCrash, prefDrinks, prefFood, prefIdeas, function (data) {
+						resolve();
+					}, function (err) {
+						reject(err);
+					});
+				}, function (err) {
+					reject(err);
+				});
 			}, function (err) {
 				reject(err);
 			})
 		}, function (err) {
 			reject(err);
 		});
-
 	});
 };
