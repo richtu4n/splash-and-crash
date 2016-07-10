@@ -1,8 +1,7 @@
-var testKey = "sk_test_5QzQvovraOiAwrEqqyLFpNQZ";
-var liveKey = "sk_live_WdDYsMLPFWF0gP9JJMJDgtps";
-var testCard = "4242424242424242";
-var stripe  = require("stripe")(testKey);
-var Promise = require("bluebird");
+var config = require('../config/config');
+var stripe  = require('stripe')(config.testSecretStripeKey);
+var Promise = require('bluebird');
+//testSecretStripeKey
 
 module.exports.send = function (token, userName) {
 	return new Promise(function(resolve, reject){
