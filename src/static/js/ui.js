@@ -156,8 +156,8 @@ var registerForm = {
 			.catch(function(error){
 				app.dump(error);
 				loader.hide();
-				_.updateError(error);
-				//_.updateError('Error. Service not available.');
+				//_.updateError(error);
+				_.updateError('Error. Service not available.');
 			});
 	},
 	show: function(){
@@ -478,7 +478,6 @@ var stripeForm = {
     			else {
     				_.enable();
     				app.clear();
-    				alert("Payment approved!");
     				messageForm.update(":)", "Thankyou!", "");
     				messageForm.show();
     				app.pause(2000)
