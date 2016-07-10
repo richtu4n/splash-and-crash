@@ -12,6 +12,8 @@ module.exports.register = function *() {
 	//check we have a user Email
 	var userContext = this.request.body;
 	var userEmail = userContext.userEmail;
+	userContext.paid = JSON.parse(userContext.paid);
+
 	if (!userEmail) {
 		this.body = { result: 'Please enter your email address', success: false };
 		return;
@@ -20,7 +22,7 @@ module.exports.register = function *() {
 	//look for existing user
 	var _user = yield mongo.db.users.findOne({ userEmail: userEmail });
 	if (_user) {
-		if(_user.paid == true){ // If we find one check paid
+		if(_user.paid){ // If we find one check paid
 			this.body = {result: 'You have already registered!', success:false}
 		} else {
 			//if not return existing user object
@@ -65,55 +67,109 @@ module.exports.agreetandcs = function *() {
 		this.body = { success: true };
 	}
 };
+
+
 module.exports.pay = function *() {
 	try {
 		var userEmail   = this.request.body.userEmail;
 		var stripeToken = this.request.body.stripeToken;
 
-		// if user paid, throw Error
-		var user = yield mongo.db.users.findOne({ userEmail: userEmail });
-		if (!user) throw new Error("User with email " +  userEmail + " doesn't exist.");
-		if (user.paid) throw new Error("User with email " + userEmail + " has already paid.");
-		if (user.paying) throw new Error("Transaction for user " + userEmail + " is currently being processed.");
-		// Set user status to paying
+	} catch (err) {
+		this.body = { result: 'Missing query parameters userEmail, stripeToken', success: false };
+		log.info(this.body);
+		return;
+	}
+
+	try {
+		// Find user with userEmail and set paying to true. If return val has paying set to true also, error. Otherwise continue.
+		var user = yield mongo.db.users.findAndModify(
+			{ userEmail: userEmail },
+			null, 
+			{ $set: { paying: true } }
+		)
+	} catch (err) {
+		this.body = { result: err, success: false };
+		log.info(this.body);
+		return;
+	}
+	if (!user) {
+		this.body = { result: "User with email " +  userEmail + " doesn't exist.", success: false };
+		log.info(this.body);
+		return;
+	}
+	if (user.paid) {
+		this.body = { result: "User with email " + userEmail + " has already paid.", success: false };
+		log.info(this.body);
+		return;
+	}
+	if (user.paying) {
+		this.body = { result: "Transaction for user " + userEmail + " is currently being processed.", success: false };
+		log.info(this.body);
+		return;
+	}
+
+
+	// Set user status to paying
+	try {
 		yield mongo.db.users.updateOne(
 			{ userEmail: userEmail },
 			{ $set: { paying: true } },
 			{ upsert: true }
 		);
+	} catch (err) {
+		this.body = { result: err, success: false };
+		log.info(this.body);
+		return;
+	}
 
+	try {
 		var stripeResponse = yield payments.send(stripeToken);
+	} catch (err) {
 
+		try {
+			yield mongo.db.failed_payments.insert({ 
+		    	userEmail: userEmail,
+		    	stripeToken: stripeToken,
+		    	stripeResponse: err
+			});
+			yield mongo.db.users.updateOne(
+				{ userEmail: userEmail },
+				{ $set: { paying: false } },
+				{ upsert: true }
+			);
+		} catch (err) {
+			this.body = { result: err, success: false };
+			log.info(this.body);
+			return;
+		}
+
+		this.body = { result: 'Payment failed.', success: false };
+		log.info(this.body);
+		return;
+	}
+
+	// Record successful payment
+	try {
+		yield mongo.db.payments.insert({
+			userEmail: userEmail,
+			stripeToken: stripeToken,
+			stripeResponse: stripeResponse
+		});
 		yield mongo.db.users.updateOne(
 			{ userEmail: userEmail }, 
 			{ $set: { paid: true, stripeToken: stripeToken, paying: false } }, 
 			{ upsert: true }
 		);
-
-		yield mongo.db.payments.insert({ 
-			userEmail: userEmail,
-			stripeToken: stripeToken,
-			stripeResponse: stripeResponse
-		});
-
-		// Send email confirmation
-
-		this.body = { result: "Payment approved!", success: true };
-
-	} catch (error) {
-
-		yield mongo.db.users.updateOne(
-			{ userEmail: userEmail },
-			{ $set: { paying: false } },
-			{ upsert: true }
-		);
-		yield mongo.db.failed_payments.insert({ 
-		    userEmail: userEmail,
-		    stripeToken: stripeToken,
-		    stripeResponse: error
-		});
-		this.body = { result: error, success: false };
+	} catch (err) {
+		this.body = { result: err, success: false };
+		log.info(this.body);
+		return;
 	}
+
+	// Send email confirmation
+
+	this.body = { result: "Payment approved!", success: true };
+	log.info(this.body);
 };
 
 
