@@ -445,7 +445,7 @@ var stripeForm = {
     			if(!res.success){
     				userContext.stripeToken = null;
     				_.enable();
-    				_.updateError(res.result.message);
+    				_.updateError(res.result);
     			} 
     			else {
     				_.enable();

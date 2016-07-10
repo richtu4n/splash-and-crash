@@ -143,7 +143,7 @@ module.exports.pay = function *() {
 			return;
 		}
 
-		this.body = { result: 'Payment failed.', success: false };
+		this.body = { result: err.message, success: false };
 		log.info(this.body);
 		return;
 	}
