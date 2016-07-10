@@ -14,18 +14,13 @@ module.exports.check = function *() {
 
 		var _user = yield mongo.db.users.findOne({ userEmail: email });
 		if (_user) {
-			data = { result: { paid: _user.paid }, success: true };
+			data = { paid: _user.paid };
 		} else {
-			data = { result: { paid: false }, success: true };
+			data = { paid: false };
 		}
-	} catch (err) {
-		data = { result: err, success: false };
-	}
-
-	try {
 		yield this.render('check', data);
 	} catch (err) {
-		// Let it 404.
+
 	}
 };
 

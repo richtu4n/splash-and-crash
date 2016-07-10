@@ -3,8 +3,10 @@
 <head>
 </head>
 <body>
-	<h1>Success!</h1>
-	<img src="static/img/success.svg" alt="success" style="width: 400px;"/>
-	<!--<img src="static/img/fail.svg" alt="fail" style="width: 400px;"/>-->
+	{{#if paid}}
+		<img src="static/img/success.svg" alt="success" style="width: 200px;" />
+	{{else}}
+		<img src="static/img/fail.svg" alt="fail" style="width: 200px;" />
+	{{/if}}
 </body>
 <html>
