@@ -1,7 +1,6 @@
 var config = require('../config/config');
-var stripe  = require('stripe')(config.testSecretStripeKey);
+var stripe  = require('stripe')(config.liveSecretStripeKey);
 var Promise = require('bluebird');
-//testSecretStripeKey
 
 module.exports.send = function (token, userName) {
 	return new Promise(function(resolve, reject){
