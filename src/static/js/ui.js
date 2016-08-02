@@ -3,7 +3,7 @@ var liveKey = "pk_live_2s04oTqPOmXdrJjPXgCQGxsL";
 
 
 $(document).ready(function(){
-	Stripe.setPublishableKey(liveKey);
+	Stripe.setPublishableKey(testKey);
 	app.init();
 });
 
