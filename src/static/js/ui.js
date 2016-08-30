@@ -2,6 +2,7 @@ var testKey = "pk_test_UEKEJN67fgfzwmBWaIkQzXcp";
 var liveKey = "pk_live_2s04oTqPOmXdrJjPXgCQGxsL";
 
 
+
 $(document).ready(function(){
 	Stripe.setPublishableKey(liveKey);
 	app.init();
